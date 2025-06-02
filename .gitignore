@@ -42,7 +42,6 @@ build/
 src/main/resources/tokens.properties
 test.json
 keys.properties
-src/main/java/ch/framedev/metarapp/handlers/ConnectionsHandler.java
 /src/main/java/ch/framedev/metarapp/util/EncryptionUtil.java
 /launch4j/
 
