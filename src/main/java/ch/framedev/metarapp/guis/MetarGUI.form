@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ch.framedev.metarapp.guis.MetarGUI">
+  <grid id="27dc6" binding="panel" layout-manager="GridLayoutManager" row-count="12" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="1281" height="708"/>
+    </constraints>
+    <properties>
+      <font name="JetBrains Mono"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <component id="48078" class="javax.swing.JLabel" binding="icaoCodeLabel">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="ICAO CODE?"/>
+        </properties>
+      </component>
+      <component id="bf916" class="javax.swing.JTextField" binding="ICAOCODETextField" default-binding="true">
+        <constraints>
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="ICAO CODE?"/>
+        </properties>
+      </component>
+      <component id="28d37" class="javax.swing.JButton" binding="checkButton" default-binding="true">
+        <constraints>
+          <grid row="2" column="3" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="Check"/>
+        </properties>
+      </component>
+      <component id="36f6d" class="javax.swing.JButton" binding="showWind">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="Click here to see the Winds"/>
+        </properties>
+      </component>
+      <component id="3775" class="javax.swing.JButton" binding="showCloud">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="Click here to see the Clouds"/>
+        </properties>
+      </component>
+      <component id="a6ac5" class="javax.swing.JButton" binding="showVisibility">
+        <constraints>
+          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="Click here to see the Visibility"/>
+        </properties>
+      </component>
+      <component id="64d5f" class="javax.swing.JLabel" binding="flightCategory">
+        <constraints>
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="Flight Category"/>
+        </properties>
+      </component>
+      <component id="302f6" class="javax.swing.JButton" binding="showHumidity">
+        <constraints>
+          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="Click here to see the Humidity"/>
+        </properties>
+      </component>
+      <component id="7b099" class="javax.swing.JButton" binding="showQNH">
+        <constraints>
+          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="Click here to see the QNH"/>
+        </properties>
+      </component>
+      <component id="537d" class="javax.swing.JButton" binding="showStation">
+        <constraints>
+          <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="Click here to see the Station"/>
+        </properties>
+      </component>
+      <component id="dec47" class="javax.swing.JButton" binding="showCondition">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="Click here to see the Conditions"/>
+        </properties>
+      </component>
+      <component id="3e398" class="javax.swing.JLabel" binding="versionLabel">
+        <constraints>
+          <grid row="11" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="MetarAPP Version: 1.0.6"/>
+        </properties>
+      </component>
+      <component id="fb704" class="javax.swing.JButton" binding="fullAsJsonButton" default-binding="true">
+        <constraints>
+          <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="Full(as Json)"/>
+        </properties>
+      </component>
+      <component id="6aaaa" class="javax.swing.JLabel" binding="dateCreated">
+        <constraints>
+          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="Date Created"/>
+        </properties>
+      </component>
+      <component id="d0518" class="javax.swing.JButton" binding="lastSearchButton" default-binding="true">
+        <constraints>
+          <grid row="3" column="3" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="Last Search"/>
+        </properties>
+      </component>
+      <component id="3994d" class="javax.swing.JCheckBox" binding="addToSearchCheckBox" default-binding="true">
+        <constraints>
+          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <selected value="true"/>
+          <text value="Add to Search"/>
+          <toolTipText value="Add to Last Search List"/>
+        </properties>
+      </component>
+      <component id="5cc30" class="javax.swing.JButton" binding="searchICAOSButton" default-binding="true">
+        <constraints>
+          <grid row="4" column="3" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="Search ICAOS"/>
+        </properties>
+      </component>
+      <component id="8a94e" class="javax.swing.JButton" binding="updateButton" default-binding="true">
+        <constraints>
+          <grid row="11" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="Update"/>
+        </properties>
+      </component>
+      <component id="6d618" class="javax.swing.JLabel" binding="hasUpdateLabel">
+        <constraints>
+          <grid row="10" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="has Update?"/>
+        </properties>
+      </component>
+      <component id="aec7c" class="javax.swing.JLabel" binding="updateLabel">
+        <constraints>
+          <grid row="10" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="no"/>
+        </properties>
+      </component>
+      <component id="42ac0" class="javax.swing.JButton" binding="downloadAsJsonButton" default-binding="true">
+        <constraints>
+          <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="Download as Json"/>
+        </properties>
+      </component>
+      <component id="bd0ec" class="javax.swing.JButton" binding="settingsButton" default-binding="true">
+        <constraints>
+          <grid row="9" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="Settings"/>
+        </properties>
+      </component>
+      <component id="85786" class="javax.swing.JButton" binding="changelogsButton" default-binding="true">
+        <constraints>
+          <grid row="8" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="Changelogs"/>
+        </properties>
+      </component>
+      <component id="58b0b" class="javax.swing.JButton" binding="showWeatherMapButton" default-binding="true">
+        <constraints>
+          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="Show Weather Map"/>
+        </properties>
+      </component>
+      <component id="e53e4" class="javax.swing.JTextField" binding="runwayTextField">
+        <constraints>
+          <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="8baca" class="javax.swing.JLabel" binding="ilsLabel">
+        <constraints>
+          <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="ILS"/>
+        </properties>
+      </component>
+      <component id="3249e" class="javax.swing.JLabel" binding="bearingLabel">
+        <constraints>
+          <grid row="6" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="Heading"/>
+        </properties>
+      </component>
+      <component id="32ca0" class="javax.swing.JButton" binding="allILSRunwaysButton" default-binding="true">
+        <constraints>
+          <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="All Runways"/>
+        </properties>
+      </component>
+      <component id="388a6" class="javax.swing.JCheckBox" binding="darkModeCheckBox" default-binding="true">
+        <constraints>
+          <grid row="9" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono"/>
+          <text value="Dark Mode"/>
+        </properties>
+      </component>
+      <component id="ea13" class="javax.swing.JButton" binding="openSimBriefButton" default-binding="true">
+        <constraints>
+          <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Open Simbrief"/>
+        </properties>
+      </component>
+      <component id="2dbd2" class="javax.swing.JLabel" binding="windLabel">
+        <constraints>
+          <grid row="7" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Arial" size="22" style="0"/>
+          <text value="Wind : N/A"/>
+        </properties>
+      </component>
+      <component id="979f7" class="javax.swing.JButton" binding="adminGUIButton" default-binding="true">
+        <constraints>
+          <grid row="11" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Admin GUI"/>
+        </properties>
+      </component>
+      <component id="a425" class="javax.swing.JButton" binding="converterButton" default-binding="true">
+        <constraints>
+          <grid row="5" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Converter"/>
+        </properties>
+      </component>
+      <component id="7aa73" class="javax.swing.JLabel" binding="languageSelected">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Language Selected : "/>
+        </properties>
+      </component>
+      <component id="3af94" class="javax.swing.JLabel" binding="windImage" custom-create="true">
+        <constraints>
+          <grid row="7" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="d7ad8" class="javax.swing.JLabel" binding="utcTime">
+        <constraints>
+          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="UTC Time"/>
+        </properties>
+      </component>
+      <component id="7918a" class="javax.swing.JLabel" binding="currentUser">
+        <constraints>
+          <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Current User :"/>
+        </properties>
+      </component>
+      <component id="c8cc7" class="javax.swing.JLabel" binding="currentIcaoLabel">
+        <constraints>
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Current ICAO : None"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>

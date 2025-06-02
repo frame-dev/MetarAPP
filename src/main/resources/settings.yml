@@ -1,0 +1,44 @@
+# Not in use by the Program
+register-login: true
+dark-mode: false
+first-time-run: false
+show-changelogs: false
+remember: false
+# Not in use by the Program
+offline-mode: false
+# Do not change this!
+version: 1.6.2
+download-folder: downloads
+# Also available in the Settings
+auto-login: false
+# Also available in the Settings
+popup-new-version: false
+# Also available in the Settings
+auto-restart-after-update: false
+# Current Locales (en-En, de-De, ru-Ru, it-It)
+language: en-En
+# Current Database (mysql, sqlite, mongodb, mysql-use-own)
+database: mysql
+mysql:
+  own-mysql-database: false
+  mysql-host: localhost
+  mysql-port: 3306
+  mysql-username: your_username
+  mysql-password: your_password
+  mysql-database: your_database
+mongodb:
+  user: user
+  password: password
+  host: localhost
+  port: 27017
+  database: your_database
+sqlite:
+  path: database
+  database: database.db
+# (false) for the old Search GUI (true) for the new Search GUI, also available in the Settings
+defaultSearch: true
+# Also available in the Settings
+branch: release
+buildNumber: 1.6.4.1-1011
+# in minutes
+update-check-interval: "15"

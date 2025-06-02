@@ -1,0 +1,993 @@
+[
+  {
+    "version": "1.0.9",
+    "date": "Not set",
+    "bugFixes": [],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": [
+      "Added Dark Mode",
+      "Added Option to Disable Register and Login",
+      "Settings Gui added",
+      "Country Code Added with File"
+    ]
+  },
+  {
+    "version": "1.1.0",
+    "date": "Not set",
+    "bugFixes": [],
+    "performanceFixes": [],
+    "features": [
+      "Changelogs added",
+      "First Run in Settings added",
+      "Changelogs Button added"
+    ]
+  },
+  {
+    "version": "1.1.1",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [],
+    "features": [
+      "CountryCode Updates in Search",
+      "Settings Updated"
+    ]
+  },
+  {
+    "version": "1.1.2",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [],
+    "features": [
+      "Weather Added"
+    ]
+  },
+  {
+    "version": "1.1.3",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [],
+    "features": [
+      "ILS Added",
+      "Bearing Added"
+    ]
+  },
+  {
+    "version": "1.1.4",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [],
+    "features": [
+      "Remember Function added",
+      "SQLite changed to MYSQL",
+      "ChangelogsReader Updated"
+    ]
+  },
+  {
+    "version": "1.1.5",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [],
+    "features": [
+      "SQLite changed to MYSQL",
+      "ChangelogsReader Updated"
+    ]
+  },
+  {
+    "version": "1.1.6",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [],
+    "features": [
+      "Icaos save in MySQL",
+      "Show all ils Runway Button added"
+    ]
+  },
+  {
+    "version": "1.1.7",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [],
+    "features": []
+  },
+  {
+    "version": "1.1.8",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [],
+    "features": [
+      "database Folder Removed",
+      "LastUsed added to MySQL (Not Visible for Users)",
+      "Show All Runways Fix"
+    ]
+  },
+  {
+    "version": "1.1.9",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [],
+    "features": [
+      "Open Simbrief Button Added",
+      "offline-mode updated / Fixes",
+      "Menubar Added"
+    ]
+  },
+  {
+    "version": "1.2.0",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fix"
+    ],
+    "features": [
+      "Show All Changelogs changed",
+      "Code cleanup",
+      "Error Message when API is down"
+    ]
+  },
+  {
+    "version": "1.2.1",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": [
+      "License Button Updated"
+    ]
+  },
+  {
+    "version": "1.2.2",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": [
+      "New Feature Added (Wind)"
+    ]
+  },
+  {
+    "version": "1.2.3",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [],
+    "features": [
+      "Admin Utilities Updated"
+    ]
+  },
+  {
+    "version": "1.2.4",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": []
+  },
+  {
+    "version": "1.2.5",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": [
+      "Password Changer Added"
+    ]
+  },
+  {
+    "version": "1.2.6",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": [
+      "Password Changer Added"
+    ]
+  },
+  {
+    "version": "1.2.7",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": []
+  },
+  {
+    "version": "1.2.7.1",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": []
+  },
+  {
+    "version": "1.2.8",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": []
+  },
+  {
+    "version": "1.2.8.1",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": []
+  },
+  {
+    "version": "1.2.9",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": [
+      "Features Added",
+      "Auto restart after update added"
+    ]
+  },
+  {
+    "version": "1.3.0",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": [
+      "Code cleanup",
+      "Features Added"
+    ]
+  },
+  {
+    "version": "1.3.1",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": [
+      "Converter Added for easy conversion of meters to miles and vice versa"
+    ]
+  },
+  {
+    "version": "1.3.2",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": [
+      "Languages Added",
+      "Settings Updated"
+    ]
+  },
+  {
+    "version": "1.3.3",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": [
+      "Settings Updated"
+    ]
+  },
+  {
+    "version": "1.4.1",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": [
+      "Settings Updated"
+    ]
+  },
+  {
+    "version": "1.4.2",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": [
+      "Settings Updated"
+    ]
+  },
+  {
+    "version": "1.4.3",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": [
+      "Code Cleanups",
+      "Better Search Added"
+    ]
+  },
+  {
+    "version": "1.4.4",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes",
+      "AirportRequests Performance Fix"
+    ],
+    "features": [
+      "Code Cleanups"
+    ]
+  },
+  {
+    "version": "1.4.5",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": [
+      "Code Cleanups",
+      "Better Search updated"
+    ]
+  },
+  {
+    "version": "1.4.5.1",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": [
+      "Code Cleanups",
+      "Wind Symbole Changed"
+    ]
+  },
+  {
+    "version": "1.4.6",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": [
+      "Error Codes Added",
+      "Documentation Added"
+    ]
+  },
+  {
+    "version": "1.4.7",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": [
+      "Better Search Updated",
+      "Error Codes Added"
+    ]
+  },
+  {
+    "version": "1.4.8",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes",
+      "Performance Fixes"
+    ],
+    "features": [
+      "Better Search Updated",
+      "Code Cleanups",
+      "Error Codes Added"
+    ]
+  },
+  {
+    "version": "1.4.9",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes",
+      "Logger sends to Server for better Bug Fixing"
+    ],
+    "performanceFixes": [
+      "Performance Fixes",
+      "Performance Fixes"
+    ],
+    "features": [
+      "Error Codes Added"
+    ]
+  },
+  {
+    "version": "1.5.0",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes",
+      "Logger sends to Server for better Bug Fixing"
+    ],
+    "performanceFixes": [
+      "Performance Fixes",
+      "Performance Fixes"
+    ],
+    "features": [
+      "Error Codes Added",
+      "Documents Added"
+    ]
+  },
+  {
+    "version": "1.5.1",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes",
+      "Logger sends to Server for better Bug Fixing"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": [
+      "Error Codes Added",
+      "Documents Added",
+      "ErrorCodes Updated and Added",
+      "SQLite Added",
+      "Options to add own MySQL Database"
+    ]
+  },
+  {
+    "version": "1.5.1.1",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes",
+      "Logger sends to Server for better Bug Fixing"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": [
+      "Error Codes Added",
+      "Documents Added",
+      "ErrorCodes Updated and Added",
+      "SQLite Added",
+      "Options to add own MySQL Database",
+      "Error Fix, Add any point the Program try to create a new account"
+    ]
+  },
+  {
+    "version": "1.5.2",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": [
+      "Code Cleanups",
+      "Error Fix, Add any point the Program try to create a new account",
+      "New Version Checking and Updating"
+    ]
+  },
+  {
+    "version": "1.5.3",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": [
+      "Code Cleanups",
+      "Error Fix, Add any point the Program try to create a new account",
+      "New Version Checking and Updating",
+      "Languages Added",
+      "settings file has been moved to yaml (settings.yml)"
+    ]
+  },
+  {
+    "version": "1.5.4",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes",
+      "Database Performance Fixes"
+    ],
+    "features": [
+      "Code Cleanups",
+      "settings file has been moved to yaml (settings.yml)",
+      "MongoDB added (new section in settings.yml)",
+      "Database bug fixing",
+      "New Setting added for the new Search"
+    ]
+  },
+  {
+    "version": "1.5.5",
+    "date": "Not set",
+    "bugFixes": [
+      "Bug Fixes"
+    ],
+    "performanceFixes": [
+      "Performance Fixes"
+    ],
+    "features": [
+      "Code Cleanups",
+      "Datastructures changed for more security"
+    ]
+  },
+  {
+    "version": "1.5.6",
+    "date": "27.11.2024",
+    "bugFixes": [],
+    "performanceFixes": [],
+    "features": [
+      "New Login GUI created/added"
+    ],
+    "release": true
+  },
+  {
+    "version": "1.5.7",
+    "date": "28.11.2024",
+    "bugFixes": [
+      "Login Security Fix",
+      "ConverterGui Error Fix wrong Formatting"
+    ],
+    "performanceFixes": [
+      "Login Performance Fix",
+      "Database Performance Fix"
+    ],
+    "features": [
+      "Faster Converting",
+      "New Changelog Handling (new Json Format)",
+      "New Download Method, Files will be automatically Zipped and put in the Download Folder",
+      "Log Files will be automatically Zipped and put in the Download Folder"
+    ],
+    "release": true
+  },
+  {
+    "version": "1.5.7.1",
+    "date": "1.12.2024",
+    "bugFixes": [
+      "Auto Login Fix"
+    ],
+    "performanceFixes": [
+    ],
+    "features": [
+    ],
+    "release": true
+  },
+  {
+    "version": "1.5.7.2",
+    "date": "1.12.2024",
+    "bugFixes": [
+      "Auto Login Fix"
+    ],
+    "performanceFixes": [
+    ],
+    "features": [
+    ],
+    "release": true
+  },
+  {
+    "version": "1.5.8",
+    "date": "9.12.2024",
+    "bugFixes": [
+      "Login Security Fix"
+    ],
+    "performanceFixes": [
+      "Database Performance Fix",
+      "Async Data access added"
+    ],
+    "features": [
+      "Build Numbers Added",
+      "New Update feature"
+    ],
+    "release": true
+  },
+  {
+    "version": "1.5.8.1",
+    "date": "11.12.2024",
+    "bugFixes": [
+      "Error Handling bug Fixes"
+    ],
+    "performanceFixes": [
+      "Better Error Logging"
+    ],
+    "features": [
+    ],
+    "release": true
+  },
+  {
+    "version": "1.5.9",
+    "date": "13.12.2024",
+    "bugFixes": [
+      "Error Handling bug Fixes"
+    ],
+    "performanceFixes": [
+      "Better Error Logging",
+      "Database Async"
+    ],
+    "features": [
+      "Database has been updated to be Async"
+    ],
+    "release": true
+  },
+  {
+    "version": "1.5.9.1",
+    "date": "14.12.2024",
+    "bugFixes": [
+      "Error Handling bug Fixes"
+    ],
+    "performanceFixes": [
+      "Better Error Logging",
+      "Database Async",
+      "Database has been improved",
+      "UserData has been updated to be Async",
+      "MySQLData has been updated to be Async",
+      "AdminGUI has been updated to be Async"
+    ],
+    "features": [
+      "Database has been updated to be Async",
+      "UserData has been updated to be Async",
+      "MySQLData has been updated to be Async",
+      "AdminGUI has been updated to be Async",
+      "MongoDB doesn't require Async"
+    ],
+    "release": true
+  },
+  {
+    "version": "1.6.0",
+    "date": "14.12.2024",
+    "bugFixes": [
+      "Error Handling bug Fixes"
+    ],
+    "performanceFixes": [
+      "Better Error Logging",
+      "Database Async",
+      "Database has been improved",
+      "UserData has been updated to be Async",
+      "MySQLData has been updated to be Async",
+      "AdminGUI has been updated to be Async"
+    ],
+    "features": [
+      "Database has been updated to be Async",
+      "UserData has been updated to be Async",
+      "MySQLData has been updated to be Async",
+      "AdminGUI has been updated to be Async",
+      "MongoDB doesn't require Async"
+    ],
+    "release": true
+  },
+  {
+    "version": "1.6.0.1-PRE-RELEASE",
+    "date": "20.12.2024",
+    "bugFixes": [
+    ],
+    "performanceFixes": [
+    ],
+    "features": [
+      "new Branch added (pre-release)"
+    ],
+    "release": true
+  },
+  {
+    "version": "1.6.0.2-PRE-RELEASE",
+    "date": "20.12.2024",
+    "bugFixes": [
+    ],
+    "performanceFixes": [
+    ],
+    "features": [
+      "new Branch added (pre-release)"
+    ],
+    "release": true
+  },
+  {
+    "version": "1.6.1",
+    "date": "20.12.2024",
+    "bugFixes": [
+      "Delete old Version bug Fixes"
+    ],
+    "performanceFixes": [
+    ],
+    "features": [
+      "new Branch added (pre-release)",
+      "Search updated",
+      "settings gui updated"
+    ],
+    "release": true
+  },
+  {
+    "version": "1.6.1.1-PRE-RELEASE",
+    "date": "21.12.2024",
+    "bugFixes": [
+      "Delete old Version bug Fixes"
+    ],
+    "performanceFixes": [
+    ],
+    "features": [
+      "settings.yml updated",
+      "UpdateHandler updated",
+      "Some files are now deprecated",
+      "Admin Gui updated",
+      "Converter updated",
+      "error_explanation.txt updated",
+      "versions.json has been modified"
+    ],
+    "release": true
+  },
+  {
+    "version": "1.6.1.2-PRE-RELEASE",
+    "date": "21.12.2024",
+    "bugFixes": [
+      "Code Cleanup",
+      "other bug fixes"
+    ],
+    "performanceFixes": [
+    ],
+    "features": [
+    ],
+    "release": true
+  },
+  {
+    "version": "1.6.1.3-PRE-RELEASE",
+    "date": "22.12.2024",
+    "bugFixes": [
+      "Database Bug Fixes"
+    ],
+    "performanceFixes": [
+    ],
+    "features": [
+      "Error Messages | Error Codes added"
+    ],
+    "release": true
+  },
+  {
+    "version": "1.6.1.4-PRE-RELEASE",
+    "date": "09.01.2025",
+    "bugFixes": [
+    ],
+    "performanceFixes": [
+      "Request Timeout Fix"
+    ],
+    "features": [
+    ],
+    "release": true
+  },
+  {
+    "version": "1.6.1.5-PRE-RELEASE",
+    "date": "09.01.2025",
+    "bugFixes": [
+    ],
+    "performanceFixes": [
+      "Request Timeout Fix",
+      "AirportRequest Timeout Fix"
+    ],
+    "features": [
+    ],
+    "release": true
+  },
+  {
+    "version": "1.6.2",
+    "date": "09.01.2025",
+    "bugFixes": [
+    ],
+    "performanceFixes": [
+    ],
+    "features": [
+    ],
+    "release": true
+  },
+  {
+    "version": "1.6.2.1-PRE-RELEASE",
+    "date": "10.01.2025",
+    "bugFixes": [
+      "Database Bug Fixes, Sometimes the Result is not correctly"
+    ],
+    "performanceFixes": [
+      "Database Asynchronous Loading"
+    ],
+    "features": [
+      "New Database Structure"
+    ],
+    "release": true
+  },
+  {
+    "version": "1.6.2.2-PRE-RELEASE",
+    "date": "12.01.2025",
+    "bugFixes": [
+      "Database Bug Fixes, Sometimes the Result is not correctly"
+    ],
+    "performanceFixes": [
+      "Database Asynchronous Loading"
+    ],
+    "features": [
+      "New Database Structure"
+    ],
+    "release": true
+  },
+  {
+    "version": "1.6.2.3-PRE-RELEASE",
+    "date": "19.01.2025",
+    "bugFixes": [
+      "Database bug Fixing"
+    ],
+    "performanceFixes": [
+      "Database Asynchronous Loading"
+    ],
+    "features": [
+      "New Database Structure",
+      "Show All Country Code Filter Function Added"
+    ],
+    "release": true
+  },
+  {
+    "version": "1.6.2.5-PRE-RELEASE",
+    "date": "01.02.2025",
+    "bugFixes": [
+    ],
+    "performanceFixes": [
+    ],
+    "features": [
+      "Update progress Added!"
+    ],
+    "release": true
+  },
+  {
+    "version": "1.6.3",
+    "date": "01.02.2025",
+    "bugFixes": [
+    ],
+    "performanceFixes": [
+    ],
+    "features": [
+      "Update progress Added!"
+    ],
+    "release": true
+  },
+  {
+    "version": "1.6.3.1-PRE-RELEASE",
+    "date": "01.02.2025",
+    "bugFixes": [
+    ],
+    "performanceFixes": [
+      "Made Update progress asynchronous!"
+    ],
+    "features": [
+    ],
+    "release": true
+  },
+  {
+    "version": "1.6.3.2-PRE-RELEASE",
+    "date": "01.02.2025",
+    "bugFixes": [
+    ],
+    "performanceFixes": [
+      "Made Update progress asynchronous!"
+    ],
+    "features": [
+    ],
+    "release": true
+  },
+  {
+    "version": "1.6.4",
+    "date": "01.02.2025",
+    "bugFixes": [
+    ],
+    "performanceFixes": [
+      "Made Update progress asynchronous!",
+      "Api Updated",
+      "Plugin Support added",
+      "Plugin System added",
+      "Plugin System Documentation added",
+      "Plugin System Example added"
+    ],
+    "features": [
+    ],
+    "release": true
+  },
+  {
+    "version": "1.6.4.2-PRE-RELEASE",
+    "date": "31.05.2025",
+    "bugFixes": [
+    ],
+    "performanceFixes": [
+    ],
+    "features": [
+      "Api Updated",
+      "Plugin Support added",
+      "Plugin System added",
+      "Plugin System Documentation added",
+      "Plugin System Example added"
+    ],
+    "release": true
+  },
+  {
+    "version": "1.6.4.1",
+    "date": "31.05.2025",
+    "bugFixes": [
+    ],
+    "performanceFixes": [
+    ],
+    "features": [
+      "Api Updated",
+      "Plugin System updated"
+    ],
+    "release": true
+  }
+]

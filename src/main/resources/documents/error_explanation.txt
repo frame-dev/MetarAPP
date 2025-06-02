@@ -1,0 +1,20 @@
+Error Code Explanation
+
+< ERROR_AIRPORT_NOT_FOUND (x445) >
+This means that the Airport does not exist.
+< ERROR_API_DOWN (x501) >
+This means that the API is not available for requests.
+< ERROR_INVALID_REQUEST (x502) >
+This means that the request is invalid because the requested URL is not a valid URL.
+< ERROR_DOWNLOAD (x503) >
+This means that the Download was not successful.
+< ERROR_UPDATE (x245) >
+This means an error has occurred while updating or downloading
+< ERROR_CREATE_FILE_OR_DIRECTORY (x246) >
+This means an error has occurred while create a file or directory
+< ERROR_REMOVE_FILE_OR_DIRECTORY (x247) >
+This means an error has occurred while removing a file or directory
+< ERROR_MYSQL_DATABASE (x253) >
+This means an error has occurred while accessing the database
+< ERROR_SQLITE_DATABASE (x254) >
+This means an error has occurred while accessing the database

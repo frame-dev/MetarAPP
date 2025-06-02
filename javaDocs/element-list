@@ -1,0 +1,9 @@
+unnamed package
+ch.framedev.metarapp.apis
+ch.framedev.metarapp.data
+ch.framedev.metarapp.database
+ch.framedev.metarapp.guis
+ch.framedev.metarapp.handlers
+ch.framedev.metarapp.main
+ch.framedev.metarapp.requests
+ch.framedev.metarapp.util

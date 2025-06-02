@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"ch.framedev.metarapp.apis"},{"l":"ch.framedev.metarapp.data"},{"l":"ch.framedev.metarapp.database"},{"l":"ch.framedev.metarapp.guis"},{"l":"ch.framedev.metarapp.handlers"},{"l":"ch.framedev.metarapp.main"},{"l":"ch.framedev.metarapp.requests"},{"l":"ch.framedev.metarapp.util"}];updateSearchResults();
