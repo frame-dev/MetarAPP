@@ -41,7 +41,6 @@ build/
 /.idea/
 src/main/resources/tokens.properties
 test.json
-src/main/resources/connections.properties
 keys.properties
 src/main/java/ch/framedev/metarapp/handlers/ConnectionsHandler.java
 /src/main/java/ch/framedev/metarapp/util/EncryptionUtil.java
