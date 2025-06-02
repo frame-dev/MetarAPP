@@ -1,0 +1,21 @@
+customLocaleFilePath: 'your-file-path.yml'
+database: 'mysql'
+directory-folder: 'files'
+download-folder: 'downloads'
+locale: 'en'
+mysql:
+  use-own-database: false
+  mysql-database: 'database_name'
+  mysql-host: 'localhost'
+  mysql-password: 'password'
+  mysql-port: 3306
+  mysql-user: 'username'
+mongodb:
+  database: 'database_name'
+  host: 'localhost'
+  port: 27017
+  user: 'username'
+  password: 'password'
+remember: false
+testing: false
+version: '1.2.5'
