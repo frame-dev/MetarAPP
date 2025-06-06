@@ -37,9 +37,9 @@ public class Main {
     public static ChangelogsReader changelogsReader;
 
     // TODO Change on every Version
-    public static final String VERSION = "1.6.4.1";
+    public static final String VERSION = "1.6.4.2";
     public static String preRelease = "1.6.4.2-PRE-RELEASE";
-    public static final String BUILD_NUMBER = "1.6.4.1-1011";
+    public static final String BUILD_NUMBER = "1.6.4.2-1012";
 
     // Development variables
     // TODO Change on publish
@@ -131,72 +131,71 @@ public class Main {
             loggerUtils.addLog("Locale not found using Fallback Language!");
         }
 
-        if (args[0].equalsIgnoreCase("cli")) {
+        if (!Desktop.isDesktopSupported() && args.length == 1 && args[0].equalsIgnoreCase("cli")) {
             try {
                 ch.framedev.metarapp.cli.Main.main(args);
             } catch (IOException | ch.framedev.metarapp.cli.utils.LocaleNotFoundException e) {
                 e.printStackTrace();
             }
-        } else {
-
-            // Database initialization
-            database = new Database();
-            if (database.isMySQLOrSQLite()) {
-                database.createTableIfNotExists();
-                database.createTableIfNotExistsUtilities();
-            }
-            try {
-                if (!database.existsUser("admin"))
-                    database.createAdminAccount();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-
-            // Load plugins at startup
-            PluginManager pluginManager = PluginManager.getInstance();
-            pluginManager.loadPlugins();
-            pluginManager.initializePlugins();
-            pluginManager.enablePlugins();
-            pluginManager.listPlugins();
-
-            UpdateHandler updateHandler = new UpdateHandler();
-            updateHandler.init();
-
-            if (Desktop.isDesktopSupported() && !args[0].equalsIgnoreCase("cli")) {
-                if (!(boolean) Main.settings.get("show-changelogs")) {
-                    showChangelogs();
-                }
-                // Launches LoginGUI to Continue
-                if (netIsAvailable()) {
-                    // new LoginGUI();
-                    LoginFrame.main(args);
-                } else {
-                    try {
-                        loggerUtils.addLog("No Network is available : " + ErrorCode.ERROR_NO_NETWORK.getError());
-                        logger.log(Level.ERROR, "No Network is available : " + ErrorCode.ERROR_NO_NETWORK.getError());
-                        EventBus.dispatchErrorEvent(
-                                new ErrorEvent(ErrorCode.ERROR_NO_NETWORK, "No Network is available"));
-                        JOptionPane.showMessageDialog(null,
-                                "You cannot use the Program properly without a Network connection");
-                    } catch (Exception e) {
-                        JOptionPane.showMessageDialog(null, "The API is not Online! or no Network");
-                        loggerUtils.addLog("The API is not Online ! Or you have no Network Connection"
-                                + ErrorCode.ERROR_API_DOWN.getError() + " : " + e.getMessage());
-                        logger.log(Level.ERROR, "The API is not Online ! Or you have no Network Connection"
-                                + ErrorCode.ERROR_API_DOWN.getError() + " : " + e.getMessage());
-                        EventBus.dispatchErrorEvent(
-                                new ErrorEvent(ErrorCode.ERROR_API_DOWN,
-                                        "The API is not Online ! Or you have no Network Connection"));
-                        throw new RuntimeException(e);
-                    }
-                    LoginUtils.userNameStatic = JOptionPane.showInputDialog("Username");
-                }
-                settings.set("version", VERSION);
-                settings.save();
-            }
-
-            // new VersionFile().uploadVersions();
+            return;
         }
+        // Database initialization
+        database = new Database();
+        if (database.isMySQLOrSQLite()) {
+            database.createTableIfNotExists();
+            database.createTableIfNotExistsUtilities();
+        }
+        try {
+            if (!database.existsUser("admin"))
+                database.createAdminAccount();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Load plugins at startup
+        PluginManager pluginManager = PluginManager.getInstance();
+        pluginManager.loadPlugins();
+        pluginManager.initializePlugins();
+        pluginManager.enablePlugins();
+        pluginManager.listPlugins();
+
+        UpdateHandler updateHandler = new UpdateHandler();
+        updateHandler.init();
+
+        if (Desktop.isDesktopSupported()) {
+            if (!(boolean) Main.settings.get("show-changelogs")) {
+                showChangelogs();
+            }
+            // Launches LoginGUI to Continue
+            if (netIsAvailable()) {
+                // new LoginGUI();
+                LoginFrame.main(args);
+            } else {
+                try {
+                    loggerUtils.addLog("No Network is available : " + ErrorCode.ERROR_NO_NETWORK.getError());
+                    logger.log(Level.ERROR, "No Network is available : " + ErrorCode.ERROR_NO_NETWORK.getError());
+                    EventBus.dispatchErrorEvent(
+                            new ErrorEvent(ErrorCode.ERROR_NO_NETWORK, "No Network is available"));
+                    JOptionPane.showMessageDialog(null,
+                            "You cannot use the Program properly without a Network connection");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "The API is not Online! or no Network");
+                    loggerUtils.addLog("The API is not Online ! Or you have no Network Connection"
+                            + ErrorCode.ERROR_API_DOWN.getError() + " : " + e.getMessage());
+                    logger.log(Level.ERROR, "The API is not Online ! Or you have no Network Connection"
+                            + ErrorCode.ERROR_API_DOWN.getError() + " : " + e.getMessage());
+                    EventBus.dispatchErrorEvent(
+                            new ErrorEvent(ErrorCode.ERROR_API_DOWN,
+                                    "The API is not Online ! Or you have no Network Connection"));
+                    throw new RuntimeException(e);
+                }
+                LoginUtils.userNameStatic = JOptionPane.showInputDialog("Username");
+            }
+            settings.set("version", VERSION);
+            settings.save();
+        }
+
+        // new VersionFile().uploadVersions();
     }
 
     private static void createDownloadsFolder() {

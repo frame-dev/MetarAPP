@@ -989,5 +989,18 @@
       "Plugin System updated"
     ],
     "release": true
+  },
+  {
+    "version": "1.6.4.2",
+    "date": "31.05.2025",
+    "bugFixes": [
+    ],
+    "performanceFixes": [
+    ],
+    "features": [
+      "Api Updated",
+      "Plugin System updated"
+    ],
+    "release": true
   }
 ]

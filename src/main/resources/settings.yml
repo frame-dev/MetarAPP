@@ -7,7 +7,7 @@ remember: false
 # Not in use by the Program
 offline-mode: false
 # Do not change this!
-version: 1.6.2
+version: 1.6.2.4
 download-folder: downloads
 # Also available in the Settings
 auto-login: false
@@ -39,6 +39,6 @@ sqlite:
 defaultSearch: true
 # Also available in the Settings
 branch: release
-buildNumber: 1.6.4.1-1011
+buildNumber: 1.6.4.2-1012
 # in minutes
 update-check-interval: "15"
