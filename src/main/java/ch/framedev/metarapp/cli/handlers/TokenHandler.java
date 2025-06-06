@@ -33,7 +33,6 @@ public class TokenHandler {
         });
     }
 
-    @SuppressWarnings("unused")
     public Properties getProperties() {
         return properties;
     }
@@ -42,7 +41,6 @@ public class TokenHandler {
         return this.properties.getProperty(key);
     }
 
-    @SuppressWarnings("unused")
     public boolean contains(String key) {
         return this.properties.containsKey(key);
     }

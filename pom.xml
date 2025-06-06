@@ -31,6 +31,7 @@
                 </dependencies>
                 <executions>
                     <execution>
+                        <?m2e execute onConfiguration?>
                         <goals>
                             <goal>javac2</goal>
                         </goals>
@@ -42,7 +43,7 @@
                     <failOnError>true</failOnError>
                 </configuration>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.6.3</version>
@@ -58,7 +59,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -196,7 +197,7 @@
     <distributionManagement>
         <repository>
             <id>framedev-repository</id>
-            <url>https://repository.framedev.ch:444/beta-releases</url>
+            <url>https://repository.framedev.ch:444/releases</url>
         </repository>
     </distributionManagement>
 

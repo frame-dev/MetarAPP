@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-@SuppressWarnings("unused")
 public class AirportRequest {
 
     /**
@@ -132,7 +131,6 @@ public class AirportRequest {
         return root;
     }
 
-    @SuppressWarnings("unused")
     public static class BasicAuthInterceptor implements Interceptor {
 
         private final String credentials;
