@@ -22,6 +22,8 @@ public class MetarAPITest {
             System.out.println(metarAPPApi.getAirportData("LSZH"));
             System.out.println(metarAPPApi.getAirportRequest("LSZH"));
             Assert.assertEquals(Main.VERSION, metarAPPApi.getMetarAPPVersion());
+            Assert.assertTrue(metarAPPApi.getMetarData("LSZH").hasResults());
+            Assert.assertTrue(metarAPPApi.getAirportData("LSZH").hasResults());
         } catch (IOException e) {
             Logger.getLogger(MetarAPITest.class.getName()).log(Level.SEVERE, e.getMessage(), e);
         }

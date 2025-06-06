@@ -10,6 +10,8 @@
 import ch.framedev.metarapp.apis.MetarAPPApi;
 import ch.framedev.metarapp.main.Main;
 import ch.framedev.metarapp.handlers.ConnectionsHandler;
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,7 +27,7 @@ public class APIResponseTest {
     @Test
     public void onRetrieveData() {
         try {
-            System.out.println(MetarAPPApi.getInstance().getMetarData("vidp"));
+            Assert.assertTrue(MetarAPPApi.getInstance().getMetarData("vidp").hasResults());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

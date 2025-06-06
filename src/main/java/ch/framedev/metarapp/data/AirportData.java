@@ -458,6 +458,10 @@ public class AirportData {
         }
     }
 
+    public boolean hasResults() {
+        return ICAO != null && !ICAO.isEmpty() && runways != null && !runways.isEmpty() && weather != null;
+    }
+
     @Override
     public String toString() {
         return new GsonBuilder().setPrettyPrinting().create().toJson(this);
