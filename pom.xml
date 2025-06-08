@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>ch.framedev</groupId>
     <artifactId>MetarAPP</artifactId>
-    <version>1.6.4.2</version>
+    <version>1.6.4.3</version>
     <properties>
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -216,31 +216,31 @@
         <dependency>
             <groupId>ch.framedev</groupId>
             <artifactId>JavaCsvUtils</artifactId>
-            <version>1.0.1-RELEASE</version>
+            <version>LATEST</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>ch.framedev</groupId>
             <artifactId>JavaYamlUtils</artifactId>
-            <version>1.2.3-RELEASE</version>
+            <version>LATEST</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>ch.framedev</groupId>
             <artifactId>JavaGsonUtils</artifactId>
-            <version>1.0.0-RELEASE</version>
+            <version>LATEST</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>ch.framedev</groupId>
             <artifactId>JavaMySQLUtils</artifactId>
-            <version>1.0.4.6-PRE-RELEASE</version>
+            <version>LATEST</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>ch.framedev</groupId>
             <artifactId>JavaSQLiteUtils</artifactId>
-            <version>1.0.5.3-TEST-RELEASE</version>
+            <version>LATEST</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -288,13 +288,13 @@
         <dependency>
             <groupId>ch.framedev</groupId>
             <artifactId>JavaMongoDBUtils</artifactId>
-            <version>1.0.4.1-PRE-RELEASE</version>
+            <version>LATEST</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>ch.framedev</groupId>
             <artifactId>JavaXMLUtils</artifactId>
-            <version>1.0.1-RELEASE</version>
+            <version>LATEST</version>
             <scope>compile</scope>
         </dependency>
                 <dependency>

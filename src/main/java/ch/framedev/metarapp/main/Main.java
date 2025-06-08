@@ -37,9 +37,9 @@ public class Main {
     public static ChangelogsReader changelogsReader;
 
     // TODO Change on every Version
-    public static final String VERSION = "1.6.4.2";
-    public static String preRelease = "1.6.4.2-PRE-RELEASE";
-    public static final String BUILD_NUMBER = "1.6.4.2-1012";
+    public static final String VERSION = "1.6.4.3";
+    public static String preRelease = "1.6.4.3-PRE-RELEASE";
+    public static final String BUILD_NUMBER = "1.6.4.3-1013";
 
     // Development variables
     // TODO Change on publish
