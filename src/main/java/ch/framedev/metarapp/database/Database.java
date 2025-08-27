@@ -5,6 +5,7 @@ import ch.framedev.javamongodbutils.MongoDBManager;
 import ch.framedev.javamysqlutils.MySQLV2;
 import ch.framedev.metarapp.data.MySQLData;
 import ch.framedev.metarapp.data.UserData;
+import ch.framedev.metarapp.main.Main;
 import ch.framedev.metarapp.util.EncryptionUtil;
 import ch.framedev.metarapp.util.ErrorCode;
 import ch.framedev.metarapp.util.Variables;
@@ -22,7 +23,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static ch.framedev.metarapp.main.Main.*;
 import static ch.framedev.metarapp.util.Setting.*;
-
+@SuppressWarnings("unused")
 public class Database {
 
     private final String TABLE = "accounts";
@@ -31,6 +32,7 @@ public class Database {
     private BackendMongoDBManager backendMongoDBManager;
     private MySQLV2 mySQL;
 
+    @SuppressWarnings("InstantiationOfUtilityClass")
     public Database() {
         Class<?> dbClass = getDatabaseClass();
 
@@ -141,11 +143,11 @@ public class Database {
         if (dbClass == MySQLV2.class || dbClass == SQLite.class) {
             DatabaseHelper databaseHelper = getDatabaseHelper();
             try {
-                databaseHelper.isTableExists(UTILITIES_TABLE, new Callback<Boolean>() {
+                databaseHelper.isTableExists(UTILITIES_TABLE, new Callback<>() {
                     @Override
                     public void onResult(Boolean result) {
                         if (!result) {
-                            mySQL.createTableAsync(UTILITIES_TABLE, new MySQLV2.Callback<Boolean>() {
+                            mySQL.createTableAsync(UTILITIES_TABLE, new MySQLV2.Callback<>() {
                                 @Override
                                 public void onResult(Boolean aBoolean) {
                                     getLogger().log(Level.INFO, "Utilities Table Created Successfully");
@@ -200,11 +202,11 @@ public class Database {
             };
 
             if (dbClass == MySQLV2.class) {
-                mySQL.isTableExistsAsync(TABLE, new MySQLV2.Callback<Boolean>() {
+                mySQL.isTableExistsAsync(TABLE, new MySQLV2.Callback<>() {
                     @Override
                     public void onResult(Boolean aBoolean) {
                         if (!aBoolean) {
-                            mySQL.createTableAsync(TABLE, new MySQLV2.Callback<Boolean>() {
+                            mySQL.createTableAsync(TABLE, new MySQLV2.Callback<>() {
                                 @Override
                                 public void onResult(Boolean aBoolean) {
                                     getLogger().log(Level.INFO, "Accounts Table Created Successfully");
@@ -228,12 +230,12 @@ public class Database {
             } else if (dbClass == SQLite.class) {
                 DatabaseHelper databaseHelper = getDatabaseHelper();
                 try {
-                    databaseHelper.isTableExists(TABLE, new Callback<Boolean>() {
+                    databaseHelper.isTableExists(TABLE, new Callback<>() {
                         @Override
                         public void onResult(Boolean result) {
                             if (!result) {
                                 try {
-                                    databaseHelper.createTable(TABLE, columns, new Callback<Boolean>() {
+                                    databaseHelper.createTable(TABLE, columns, new Callback<>() {
                                         @Override
                                         public void onResult(Boolean aBoolean) {
                                             getLogger().log(Level.INFO, "Accounts Table Created Successfully");
@@ -397,7 +399,7 @@ public class Database {
             try {
                 String finalUserName = userName;
                 String finalUserName1 = userName;
-                dbHelper.isTableExists(TABLE, new Callback<Boolean>() {
+                dbHelper.isTableExists(TABLE, new Callback<>() {
                     @Override
                     public void onResult(Boolean tableExists) {
                         if (!tableExists) {
@@ -406,7 +408,7 @@ public class Database {
                         }
 
                         try {
-                            dbHelper.exists(TABLE, "UserName", finalUserName, new Callback<Boolean>() {
+                            dbHelper.exists(TABLE, "UserName", finalUserName, new Callback<>() {
                                 @Override
                                 public void onResult(Boolean userExists) {
                                     if (!userExists) {
@@ -415,7 +417,7 @@ public class Database {
                                     }
 
                                     try {
-                                        dbHelper.get(TABLE, "Password", "UserName", finalUserName1, new Callback<Object>() {
+                                        dbHelper.get(TABLE, "Password", "UserName", finalUserName1, new Callback<>() {
                                             @Override
                                             public void onResult(Object result) {
                                                 byte[] hashedPassword = (byte[]) result;
@@ -470,7 +472,7 @@ public class Database {
 
                     @Override
                     public void onError(Throwable throwable) {
-                        throwable.printStackTrace();
+                        future.completeExceptionally(throwable);
                     }
                 });
             } catch (Exception ex) {
@@ -502,13 +504,13 @@ public class Database {
                 DatabaseHelper dbHelper = getDatabaseHelper();
 
                 // Check if the user exists
-                dbHelper.exists(TABLE, "UserName", userName, new Callback<Boolean>() {
+                dbHelper.exists(TABLE, "UserName", userName, new Callback<>() {
                     @Override
                     public void onResult(Boolean userExists) {
                         if (Boolean.TRUE.equals(userExists)) {
                             // Retrieve the password
                             try {
-                                dbHelper.get(TABLE, "Password", "UserName", userName, byte[].class, new Callback<byte[]>() {
+                                dbHelper.get(TABLE, "Password", "UserName", userName, byte[].class, new Callback<>() {
                                     @Override
                                     public void onResult(byte[] password) {
                                         if (password != null) {
@@ -621,7 +623,7 @@ public class Database {
                 public void onResult(Boolean aBoolean) {
                     if (aBoolean) {
                         byte[] passwordBytes = new PasswordHasher().hashPassword(password);
-                        backendMongoDBManager.updateDataAsync("userName", finalUserName1, "password", passwordBytes, TABLE, new ch.framedev.javamongodbutils.Callback<Void>() {
+                        backendMongoDBManager.updateDataAsync("userName", finalUserName1, "password", passwordBytes, TABLE, new ch.framedev.javamongodbutils.Callback<>() {
                             @Override
                             public void onResult(Void unused) {
                                 future.complete(true);
@@ -629,7 +631,7 @@ public class Database {
 
                             @Override
                             public void onError(Throwable throwable) {
-                                throwable.printStackTrace();
+                                future.completeExceptionally(throwable);
                             }
                         });
                     }
@@ -637,7 +639,7 @@ public class Database {
 
                 @Override
                 public void onError(Throwable throwable) {
-                    throwable.printStackTrace();
+                    future.completeExceptionally(throwable);
                 }
             });
         }
@@ -652,12 +654,12 @@ public class Database {
             DatabaseHelper dbHelper = getDatabaseHelper();
 
             try {
-                dbHelper.exists(TABLE, "UserName", userName, new Callback<Boolean>() {
+                dbHelper.exists(TABLE, "UserName", userName, new Callback<>() {
                     @Override
                     public void onResult(Boolean result) {
                         if (result) {
                             try {
-                                dbHelper.update(TABLE, "Used", used, "UserName", userName, new Callback<Boolean>() {
+                                dbHelper.update(TABLE, "Used", used, "UserName", userName, new Callback<>() {
                                     @Override
                                     public void onResult(Boolean result) {
                                         // no-op
@@ -716,7 +718,7 @@ public class Database {
 
             try {
                 String finalUserName = userName;
-                dbHelper.exists(TABLE, "UserName", userName, new Callback<Boolean>() {
+                dbHelper.exists(TABLE, "UserName", userName, new Callback<>() {
                     @Override
                     public void onResult(Boolean result) {
                         if (result) {
@@ -781,7 +783,7 @@ public class Database {
             DatabaseHelper dbHelper = getDatabaseHelper();
 
             try {
-                dbHelper.exists(TABLE, "UserName", userName, new Callback<Boolean>() {
+                dbHelper.exists(TABLE, "UserName", userName, new Callback<>() {
                     @Override
                     public void onResult(Boolean result) {
                         try (Connection connection = dbHelper.getConnection();
@@ -824,12 +826,12 @@ public class Database {
 
             try {
                 String finalUserName = userName;
-                dbHelper.exists(TABLE, "UserName", userName, new Callback<Boolean>() {
+                dbHelper.exists(TABLE, "UserName", userName, new Callback<>() {
                     @Override
                     public void onResult(Boolean result) {
                         if (result) {
                             try {
-                                dbHelper.get(TABLE, "MapOpened", "UserName", finalUserName, new Callback<Object>() {
+                                dbHelper.get(TABLE, "MapOpened", "UserName", finalUserName, new Callback<>() {
                                     @Override
                                     public void onResult(Object result) {
                                         if (result == null)
@@ -891,7 +893,7 @@ public class Database {
             DatabaseHelper dbHelper = getDatabaseHelper();
 
             try {
-                dbHelper.exists(TABLE, "UserName", userName, new Callback<Boolean>() {
+                dbHelper.exists(TABLE, "UserName", userName, new Callback<>() {
                     @Override
                     public void onResult(Boolean result) {
                         if (result) {
@@ -935,7 +937,7 @@ public class Database {
 
             try {
                 String finalUserName = userName;
-                dbHelper.exists(TABLE, "UserName", userName, new Callback<Boolean>() {
+                dbHelper.exists(TABLE, "UserName", userName, new Callback<>() {
                     @Override
                     public void onResult(Boolean result) {
                         if (result) {
@@ -1001,7 +1003,7 @@ public class Database {
             String icaosJson = new Gson().toJson(icaos);
 
             try {
-                dbHelper.exists(TABLE, "UserName", userName, new Callback<Boolean>() {
+                dbHelper.exists(TABLE, "UserName", userName, new Callback<>() {
                     @Override
                     public void onResult(Boolean result) {
                         if (result) {
@@ -1046,12 +1048,12 @@ public class Database {
 
             try {
                 String finalUserName = userName;
-                dbHelper.exists(TABLE, "UserName", userName, new Callback<Boolean>() {
+                dbHelper.exists(TABLE, "UserName", userName, new Callback<>() {
                     @Override
                     public void onResult(Boolean userExists) {
                         if (userExists) {
                             try {
-                                dbHelper.get(TABLE, "ICAOS", "UserName", finalUserName, new Callback<Object>() {
+                                dbHelper.get(TABLE, "ICAOS", "UserName", finalUserName, new Callback<>() {
                                     @Override
                                     public void onResult(Object result) {
                                         if (result != null) {
@@ -1101,7 +1103,6 @@ public class Database {
                             future.complete(icaosList);
                         } catch (Exception parseEx) {
                             System.err.println("Error parsing ICAOS JSON: " + parseEx.getMessage());
-                            parseEx.printStackTrace();
                             future.complete(Collections.emptyList());
                         }
                     } else {
@@ -1155,7 +1156,7 @@ public class Database {
             DatabaseHelper dbHelper = getDatabaseHelper();
 
             try {
-                dbHelper.exists(TABLE, "UserName", userName, new Callback<Boolean>() {
+                dbHelper.exists(TABLE, "UserName", userName, new Callback<>() {
                     @Override
                     public void onResult(Boolean result) {
                         if (result) {
@@ -1199,12 +1200,12 @@ public class Database {
 
             try {
                 String finalUserName = userName;
-                dbHelper.exists(TABLE, "UserName", userName, new Callback<Boolean>() {
+                dbHelper.exists(TABLE, "UserName", userName, new Callback<>() {
                     @Override
                     public void onResult(Boolean result) {
                         if (result) {
                             try {
-                                dbHelper.get(TABLE, "LastUsed", "UserName", finalUserName, String.class, new Callback<String>() {
+                                dbHelper.get(TABLE, "LastUsed", "UserName", finalUserName, String.class, new Callback<>() {
                                     @Override
                                     public void onResult(String result) {
                                         future.complete(result);
@@ -1261,9 +1262,7 @@ public class Database {
             }
         } else {
             List<Document> documents = backendMongoDBManager.getAllDocuments(TABLE);
-            documents.forEach(document -> {
-                users.add(document.getString("userName"));
-            });
+            documents.forEach(document -> users.add(document.getString("userName")));
         }
 
         return users;
@@ -1276,12 +1275,12 @@ public class Database {
         if (getDatabaseClass() == MySQLV2.class || getDatabaseClass() == SQLite.class) {
             DatabaseHelper databaseHelper = getDatabaseHelper();
             try {
-                databaseHelper.exists(TABLE, "UserName", userName, new Callback<Boolean>() {
+                databaseHelper.exists(TABLE, "UserName", userName, new Callback<>() {
                     @Override
                     public void onResult(Boolean exists) {
                         if (exists) {
                             try {
-                                databaseHelper.get(TABLE, "ID", "UserName", userName, new Callback<Object>() {
+                                databaseHelper.get(TABLE, "ID", "UserName", userName, new Callback<>() {
                                     @Override
                                     public void onResult(Object object) {
                                         future.complete((int) object);
@@ -1326,7 +1325,7 @@ public class Database {
     public void changeValue(String userName, String where, String data) {
         createTableIfNotExists();
         if (getAllUserNames().contains(userName))
-            mySQL.updateDataAsync(TABLE, where, "'" + data + "'", "UserName='" + userName + "'", new MySQLV2.Callback<Boolean>() {
+            mySQL.updateDataAsync(TABLE, where, "'" + data + "'", "UserName='" + userName + "'", new MySQLV2.Callback<>() {
                 @Override
                 public void onResult(Boolean aBoolean) {
                     if (aBoolean)
@@ -1345,11 +1344,11 @@ public class Database {
         if (isMySQLOrSQLite()) {
             createTableIfNotExists();
             if (getDatabaseClass() == MySQLV2.class) {
-                mySQL.existsAsync(TABLE, "UserName", user, new MySQLV2.Callback<Boolean>() {
+                mySQL.existsAsync(TABLE, "UserName", user, new MySQLV2.Callback<>() {
                     @Override
                     public void onResult(Boolean aBoolean) {
                         if (aBoolean)
-                            mySQL.deleteDataInTableAsync(TABLE, "UserName='" + user + "'", new MySQLV2.Callback<Boolean>() {
+                            mySQL.deleteDataInTableAsync(TABLE, "UserName='" + user + "'", new MySQLV2.Callback<>() {
                                 @Override
                                 public void onResult(Boolean aBoolean) {
                                     if (aBoolean)
@@ -1373,7 +1372,7 @@ public class Database {
             } else if (getDatabaseClass() == SQLite.class) {
                 DatabaseHelper databaseHelper = getDatabaseHelper();
                 try {
-                    databaseHelper.exists(TABLE, "UserName", user, new Callback<Boolean>() {
+                    databaseHelper.exists(TABLE, "UserName", user, new Callback<>() {
                         @Override
                         public void onResult(Boolean result) {
 
@@ -1381,7 +1380,7 @@ public class Database {
 
                         @Override
                         public void onError(Throwable throwable) {
-                            throwable.printStackTrace();
+                            Main.getLogger().error(throwable.getMessage(), throwable);
                         }
                     });
                 } catch (SQLException e) {
@@ -1395,6 +1394,7 @@ public class Database {
         }
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public boolean createData(String userName) {
         if (isMySQLOrSQLite()) {
             createTableIfNotExistsUtilities();
@@ -1468,7 +1468,7 @@ public class Database {
         createData(userName);
         if (isMySQLOrSQLite()) {
             if (getDatabaseClass() == MySQLV2.class) {
-                mySQL.updateDataAsync(UTILITIES_TABLE, "Version", version, "UserName='" + userName + "'", new MySQLV2.Callback<Boolean>() {
+                mySQL.updateDataAsync(UTILITIES_TABLE, "Version", version, "UserName='" + userName + "'", new MySQLV2.Callback<>() {
                     @Override
                     public void onResult(Boolean aBoolean) {
                         if (aBoolean)
@@ -1484,7 +1484,7 @@ public class Database {
             } else if (getDatabaseClass() == SQLite.class) {
                 DatabaseHelper databaseHelper = getDatabaseHelper();
                 try {
-                    databaseHelper.update(UTILITIES_TABLE, "Version", version, "UserName", userName, new Callback<Boolean>() {
+                    databaseHelper.update(UTILITIES_TABLE, "Version", version, "UserName", userName, new Callback<>() {
                         @Override
                         public void onResult(Boolean result) {
 
@@ -1492,7 +1492,7 @@ public class Database {
 
                         @Override
                         public void onError(Throwable throwable) {
-                            throwable.printStackTrace();
+                            Main.getLogger().error(throwable.getMessage(), throwable);
                         }
                     });
                 } catch (SQLException e) {
@@ -1510,7 +1510,7 @@ public class Database {
         if (isMySQLOrSQLite()) {
             DatabaseHelper dbHelper = getDatabaseHelper();
             try {
-                dbHelper.get(UTILITIES_TABLE, "Version", "UserName", userName, new Callback<Object>() {
+                dbHelper.get(UTILITIES_TABLE, "Version", "UserName", userName, new Callback<>() {
                     @Override
                     public void onResult(Object result) {
                         future.complete((String) result);
@@ -1538,7 +1538,7 @@ public class Database {
         createData(userName);
         if (isMySQLOrSQLite()) {
             if (getDatabaseClass() == MySQLV2.class) {
-                mySQL.updateDataAsync(UTILITIES_TABLE, "Online", "" + online, "UserName='" + userName + "'", new MySQLV2.Callback<Boolean>() {
+                mySQL.updateDataAsync(UTILITIES_TABLE, "Online", "" + online, "UserName='" + userName + "'", new MySQLV2.Callback<>() {
                     @Override
                     public void onResult(Boolean aBoolean) {
                         if (aBoolean)
@@ -1554,7 +1554,7 @@ public class Database {
             } else if (getDatabaseClass() == SQLite.class) {
                 DatabaseHelper databaseHelper = getDatabaseHelper();
                 try {
-                    databaseHelper.update(UTILITIES_TABLE, "Online", online + "", "UserName", userName, new Callback<Boolean>() {
+                    databaseHelper.update(UTILITIES_TABLE, "Online", online + "", "UserName", userName, new Callback<>() {
                         @Override
                         public void onResult(Boolean result) {
 
@@ -1562,7 +1562,7 @@ public class Database {
 
                         @Override
                         public void onError(Throwable throwable) {
-                            throwable.printStackTrace();
+                            Main.getLogger().error(throwable.getMessage(), throwable);
                         }
                     });
                 } catch (SQLException e) {
@@ -1580,7 +1580,7 @@ public class Database {
         if (isMySQLOrSQLite()) {
             DatabaseHelper dbHelper = getDatabaseHelper();
             try {
-                dbHelper.get(UTILITIES_TABLE, "Online", "UserName", userName, new Callback<Object>() {
+                dbHelper.get(UTILITIES_TABLE, "Online", "UserName", userName, new Callback<>() {
                     @Override
                     public void onResult(Object result) {
                         if (result instanceof Boolean)
@@ -1611,7 +1611,7 @@ public class Database {
         createData(userName);
         if (isMySQLOrSQLite()) {
             if (getDatabaseClass() == MySQLV2.class) {
-                mySQL.updateDataAsync(UTILITIES_TABLE, "HasUpdate", "" + hasUpdate, "UserName='" + userName + "'", new MySQLV2.Callback<Boolean>() {
+                mySQL.updateDataAsync(UTILITIES_TABLE, "HasUpdate", "" + hasUpdate, "UserName='" + userName + "'", new MySQLV2.Callback<>() {
                     @Override
                     public void onResult(Boolean aBoolean) {
                         if (aBoolean)
@@ -1627,7 +1627,7 @@ public class Database {
             } else if (getDatabaseClass() == SQLite.class) {
                 DatabaseHelper databaseHelper = getDatabaseHelper();
                 try {
-                    databaseHelper.update(UTILITIES_TABLE, "HasUpdate", String.valueOf(hasUpdate), "UserName", userName, new Callback<Boolean>() {
+                    databaseHelper.update(UTILITIES_TABLE, "HasUpdate", String.valueOf(hasUpdate), "UserName", userName, new Callback<>() {
                         @Override
                         public void onResult(Boolean result) {
 
@@ -1635,7 +1635,7 @@ public class Database {
 
                         @Override
                         public void onError(Throwable throwable) {
-                            throwable.printStackTrace();
+                            Main.getLogger().error(throwable.getMessage(), throwable);
                         }
                     });
                 } catch (SQLException e) {
@@ -1653,7 +1653,7 @@ public class Database {
         if (isMySQLOrSQLite()) {
             DatabaseHelper dbHelper = getDatabaseHelper();
             try {
-                dbHelper.get(UTILITIES_TABLE, "HasUpdate", "UserName", userName, new Callback<Object>() {
+                dbHelper.get(UTILITIES_TABLE, "HasUpdate", "UserName", userName, new Callback<>() {
                     @Override
                     public void onResult(Object result) {
                         if (result instanceof Boolean)
@@ -1686,7 +1686,7 @@ public class Database {
         createData(userName);
         if (isMySQLOrSQLite()) {
             if (getDatabaseClass() == MySQLV2.class)
-                mySQL.updateDataAsync(UTILITIES_TABLE, "LastUpdated", date, "UserName='" + userName + "'", new MySQLV2.Callback<Boolean>() {
+                mySQL.updateDataAsync(UTILITIES_TABLE, "LastUpdated", date, "UserName='" + userName + "'", new MySQLV2.Callback<>() {
                     @Override
                     public void onResult(Boolean aBoolean) {
                         if (aBoolean)
@@ -1702,7 +1702,7 @@ public class Database {
             else if (getDatabaseClass() == SQLite.class) {
                 DatabaseHelper databaseHelper = getDatabaseHelper();
                 try {
-                    databaseHelper.update(UTILITIES_TABLE, "LastUpdated", date, "UserName", userName, new Callback<Boolean>() {
+                    databaseHelper.update(UTILITIES_TABLE, "LastUpdated", date, "UserName", userName, new Callback<>() {
                         @Override
                         public void onResult(Boolean result) {
 
@@ -1710,7 +1710,7 @@ public class Database {
 
                         @Override
                         public void onError(Throwable throwable) {
-                            throwable.printStackTrace();
+                            Main.getLogger().error(throwable.getMessage(), throwable);
                         }
                     });
                 } catch (SQLException e) {
@@ -1728,7 +1728,7 @@ public class Database {
         if (isMySQLOrSQLite()) {
             DatabaseHelper dbHelper = getDatabaseHelper();
             try {
-                dbHelper.get(UTILITIES_TABLE, "LastUpdated", "UserName", userName, new Callback<Object>() {
+                dbHelper.get(UTILITIES_TABLE, "LastUpdated", "UserName", userName, new Callback<>() {
                     @Override
                     public void onResult(Object result) {
                         future.complete((String) result);
@@ -1753,6 +1753,7 @@ public class Database {
         return future;
     }
 
+    @SuppressWarnings("resource")
     public boolean changePassword(String userName, String oldPassword, String newPassword) {
         byte[] oldPw = null;
         if (isMySQLOrSQLite()) {
