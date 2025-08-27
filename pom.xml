@@ -1,9 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>ch.framedev</groupId>
+    <groupId>io.github.frame-dev</groupId>
     <artifactId>MetarAPP</artifactId>
-    <version>1.6.4.3</version>
+    <version>1.6.4.4</version>
+
+    <name>MetarAPP</name>
+    <description>MetarAPP</description>
+    <url>https://github.com/frame-dev/MetarAPP</url>
+
+    <scm>
+        <url>https://github.com/frame-dev/MetarAPP</url>
+        <connection>scm:git:git://github.com/frame-dev/MetarAPP.git</connection>
+        <developerConnection>scm:git:ssh://github.com:frame-dev/MetarAPP.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>frame-dev</id>
+            <name>Framedev</name>
+            <email>framedev@hotmail.com</email>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>GPT-3</name>
+            <url>https://openai.com/policies/terms-of-use</url>
+        </license>
+    </licenses>
+
     <properties>
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -43,7 +71,7 @@
                     <failOnError>true</failOnError>
                 </configuration>
             </plugin>
-            <!--<plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.6.3</version>
@@ -53,13 +81,13 @@
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
-                        <phase>deploy</phase>
+                        <phase>package</phase>
                         <goals>
                             <goal>jar</goal>
                         </goals>
                     </execution>
                 </executions>
-            </plugin>-->
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -67,7 +95,7 @@
                 <executions>
                     <execution>
                         <id>attach-source</id>
-                        <phase>deploy</phase>
+                        <phase>package</phase>
                         <goals>
                             <goal>jar</goal>
                         </goals>
@@ -86,7 +114,8 @@
                         </goals>
                         <configuration>
                             <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                             </transformers>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                         </configuration>
@@ -160,6 +189,33 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <keyname>D499DBED830387D33CDD4140534AA54EF72DA8E5</keyname>
+                    <useAgent>false</useAgent>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.8.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.3.1</version>
                 <dependencies>
@@ -195,9 +251,17 @@
     </pluginRepositories>
 
     <distributionManagement>
-        <repository>
+        <!--<repository>
             <id>framedev-repository</id>
-            <url>https://repository.framedev.ch:444/releases</url>
+            <url>https://repository.framedev.ch:444/releases/</url>
+        </repository>-->
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
 
@@ -214,39 +278,39 @@
 
     <dependencies>
         <dependency>
-            <groupId>ch.framedev</groupId>
+            <groupId>io.github.frame-dev</groupId>
             <artifactId>JavaCsvUtils</artifactId>
-            <version>LATEST</version>
+            <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>ch.framedev</groupId>
+            <groupId>io.github.frame-dev</groupId>
             <artifactId>JavaYamlUtils</artifactId>
-            <version>LATEST</version>
+            <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>ch.framedev</groupId>
+            <groupId>io.github.frame-dev</groupId>
             <artifactId>JavaGsonUtils</artifactId>
-            <version>LATEST</version>
+            <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>ch.framedev</groupId>
+            <groupId>io.github.frame-dev</groupId>
             <artifactId>JavaMySQLUtils</artifactId>
-            <version>LATEST</version>
+            <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>ch.framedev</groupId>
+            <groupId>io.github.frame-dev</groupId>
             <artifactId>JavaSQLiteUtils</artifactId>
-            <version>LATEST</version>
+            <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>ch.framedev</groupId>
+            <groupId>io.github.frame-dev</groupId>
             <artifactId>SimpleJavaUtils</artifactId>
-            <version>LATEST</version>
+            <version>1.2.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -286,18 +350,18 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>ch.framedev</groupId>
+            <groupId>io.github.frame-dev</groupId>
             <artifactId>JavaMongoDBUtils</artifactId>
-            <version>LATEST</version>
+            <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>ch.framedev</groupId>
-            <artifactId>JavaXMLUtils</artifactId>
-            <version>LATEST</version>
+            <groupId>io.github.frame-dev</groupId>
+            <artifactId>SimpleXmlUtils</artifactId>
+            <version>1.0.1</version>
             <scope>compile</scope>
         </dependency>
-                <dependency>
+        <dependency>
             <groupId>jline</groupId>
             <artifactId>jline</artifactId>
             <version>2.14.5</version>

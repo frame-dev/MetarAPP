@@ -6,6 +6,7 @@ import ch.framedev.javamysqlutils.JsonConnection;
 import ch.framedev.javamysqlutils.MySQL;
 import ch.framedev.metarapp.data.MySQLData;
 import ch.framedev.metarapp.data.UserData;
+import ch.framedev.metarapp.main.Main;
 import ch.framedev.metarapp.util.EncryptionUtil;
 import ch.framedev.metarapp.util.ErrorCode;
 import ch.framedev.metarapp.util.Variables;
@@ -32,47 +33,51 @@ public class Database {
     private BackendMongoDBManager backendMongoDBManager;
 
     public Database() {
-        if (getDatabaseClass() == MySQL.class) {
+        Class<?> dbClass = getDatabaseClass();
+
+        if (dbClass == MySQL.class) {
+            String host, user, password, database;
+            int port;
             if (!(boolean) settings.get(OWN_MYSQL_DATABASE.getKey())) {
-                new MySQL(new JsonConnection(Variables.MYSQL_HOST,
-                        Variables.MYSQL_USER,
-                        Variables.MYSQL_PASSWORD,
-                        Variables.MYSQL_DATABASE,
-                        Variables.MYSQL_PORT));
-                MySQL.setAllowPublicKey(true);
-                String message = localeUtils.getString("connectedToDatabase", "%HOST%", "framedev.ch");
-                message = message.replace("%DATABASE%", "MySQL");
-                getLogger().log(Level.INFO, message);
+                host = Variables.MYSQL_HOST;
+                user = Variables.MYSQL_USER;
+                password = Variables.MYSQL_PASSWORD;
+                database = Variables.MYSQL_DATABASE;
+                port = Variables.MYSQL_PORT;
             } else {
-                String host = (String) settings.get(MYSQL_HOST.getKey());
-                int port = (int) settings.get(MYSQL_PORT.getKey());
-                String userName = (String) settings.get(MYSQL_USERNAME.getKey());
-                String password = (String) settings.get(MYSQL_PASSWORD.getKey());
-                String database = (String) settings.get(MYSQL_DATABASE.getKey());
-                new MySQL(new JsonConnection(host, userName, password, database, port));
-                MySQL.setAllowPublicKey(true);
-                String message = localeUtils.getString("connectedToDatabasePort");
-                message = message.replace("%DATABASE%", "MySQL");
-                message = message.replace("%HOST%", host).replace("%PORT%", String.valueOf(port));
-                getLogger().log(Level.INFO, message);
+                host = (String) settings.get(MYSQL_HOST.getKey());
+                user = (String) settings.get(MYSQL_USERNAME.getKey());
+                password = (String) settings.get(MYSQL_PASSWORD.getKey());
+                database = (String) settings.get(MYSQL_DATABASE.getKey());
+                port = (int) settings.get(MYSQL_PORT.getKey());
             }
-        } else if (getDatabaseClass() == SQLite.class) {
+            new MySQL(new JsonConnection(host, user, password, database, port));
+            MySQL.setAllowPublicKey(true);
+            String message = localeUtils.getString(
+                    (boolean) settings.get(OWN_MYSQL_DATABASE.getKey()) ? "connectedToDatabasePort" : "connectedToDatabase",
+                    "%HOST%", host
+            );
+            message = message.replace("%DATABASE%", "MySQL").replace("%PORT%", String.valueOf(port));
+            getLogger().log(Level.INFO, message);
+        } else if (dbClass == SQLite.class) {
             new SQLite(Variables.FILES_DIRECTORY + "/" + settings.getString(SQLITE_PATH.getKey()), settings.getString(SQLITE_DATABASE.getKey()));
             String message = localeUtils.getString("connectedToSQLite");
             getLogger().log(Level.INFO, message);
-        } else if (getDatabaseClass() == MongoDBManager.class) {
+        } else if (dbClass == MongoDBManager.class) {
             String user = settings.getString(MONGODB_USER.getKey());
             String password = settings.getString(MONGODB_PASSWORD.getKey());
             String host = settings.getString(MONGODB_HOST.getKey());
             int port = settings.getInt(MONGODB_PORT.getKey());
             String database = settings.getString(MONGODB_DATABASE.getKey());
-            String message = localeUtils.getString("connectedToDatabasePort", "%HOST%", host);
-            message = message.replace("%PORT%", String.valueOf(port));
-            message = message.replace("%DATABASE%", "MongoDB");
+            String message = localeUtils.getString("connectedToDatabasePort", "%HOST%", host)
+                    .replace("%PORT%", String.valueOf(port))
+                    .replace("%DATABASE%", "MongoDB");
             mongoDBManager = new MongoDBManager(host, user, password, port, database);
             mongoDBManager.connect();
             backendMongoDBManager = new BackendMongoDBManager(mongoDBManager);
             getLogger().log(Level.INFO, message);
+        } else if(settings.getString("database").equalsIgnoreCase("file")) {
+            getLogger().info("Using File Database");
         }
     }
 
@@ -217,7 +222,7 @@ public class Database {
                     databaseHelper.isTableExists(TABLE, new Callback<Boolean>() {
                         @Override
                         public void onResult(Boolean result) {
-                            if(!result) {
+                            if (!result) {
                                 try {
                                     databaseHelper.createTable(TABLE, columns, new Callback<Boolean>() {
                                         @Override
@@ -445,7 +450,7 @@ public class Database {
                 backendMongoDBManager.existsAsync("userName", userName, TABLE, new ch.framedev.javamongodbutils.Callback<>() {
                     @Override
                     public void onResult(Boolean result) {
-                        if(result) {
+                        if (result) {
                             byte[] storedPassword = retrieveBinaryData(TABLE, "userName", finalUserName2, "password");
                             boolean isValid = storedPassword != null && new PasswordHasher().verifyPassword(password, storedPassword);
                             future.complete(isValid);
@@ -605,7 +610,7 @@ public class Database {
             backendMongoDBManager.existsAsync("userName", userName, TABLE, new ch.framedev.javamongodbutils.Callback<>() {
                 @Override
                 public void onResult(Boolean aBoolean) {
-                    if(aBoolean) {
+                    if (aBoolean) {
                         byte[] passwordBytes = new PasswordHasher().hashPassword(password);
                         backendMongoDBManager.updateDataAsync("userName", finalUserName1, "password", passwordBytes, TABLE, new ch.framedev.javamongodbutils.Callback<Void>() {
                             @Override
@@ -1548,7 +1553,7 @@ public class Database {
 
                         @Override
                         public void onError(Throwable throwable) {
-    throwable.printStackTrace();
+                            throwable.printStackTrace();
                         }
                     });
                 } catch (SQLException e) {

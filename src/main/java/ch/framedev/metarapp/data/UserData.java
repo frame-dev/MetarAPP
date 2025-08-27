@@ -72,6 +72,10 @@ public class UserData {
         this.lastUsed = lastUsed;
     }
 
+    /**
+     * Saves the user data to the database.
+     * This method should be called whenever the user data is modified.
+     */
     public void save() {
         Main.database.setUsed(userName, used);
         Main.database.setMapOpened(userName, mapOpened);

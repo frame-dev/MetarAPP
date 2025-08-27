@@ -74,6 +74,7 @@ public class LocaleUtils {
         this.configuration.load();
         // Set the file reference to the fallback locale file
         file = new SimpleJavaUtils().getFromResourceFile("locales/fallback.yml");
+        Main.getLogger().error("No specific locale provided, using fallback locale.");
     }
 
     /**

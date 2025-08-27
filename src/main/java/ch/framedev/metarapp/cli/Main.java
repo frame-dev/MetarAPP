@@ -565,7 +565,6 @@ public class Main {
      * This method returns the LocaleUtils instance used for managing
      * locale-specific strings and resources.
      *
-     * @return the LocaleUtils instance for the MetarAPP application
      */
     public static void setLocaleUtils(LocaleUtils localeUtils) {
         Main.localeUtils = localeUtils;

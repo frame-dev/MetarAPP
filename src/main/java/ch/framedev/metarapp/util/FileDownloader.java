@@ -13,9 +13,11 @@ import java.util.concurrent.CompletableFuture;
 
 public class FileDownloader extends JFrame {
 
-    private JProgressBar progressBar;
-    private JLabel statusLabel;
-    private String fileUrl, location, fileNameWithExtension;
+    private final JProgressBar progressBar;
+    private final JLabel statusLabel;
+    private final String fileUrl;
+    private final String location;
+    private final String fileNameWithExtension;
 
     private File file;
 
@@ -29,6 +31,15 @@ public class FileDownloader extends JFrame {
         this.fileUrl = fileUrl;
         this.location = location;
         this.fileNameWithExtension = fileNameWithExtensions;
+
+        if (location != null) {
+            file = new File(location, fileNameWithExtension);
+            if (file.getParentFile() != null && !file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
+        } else {
+            file = new File(fileNameWithExtension);
+        }
 
         statusLabel = new JLabel("Preparing download...", SwingConstants.CENTER);
         progressBar = new JProgressBar(0, 100);
@@ -44,15 +55,6 @@ public class FileDownloader extends JFrame {
         SwingWorker<Void, Integer> worker = new SwingWorker<>() {
             @Override
             protected Void doInBackground() {
-                if (location != null) {
-                    file = new File(location, fileNameWithExtension);
-                    if (file.getParentFile() != null && !file.getParentFile().exists()) {
-                        file.getParentFile().mkdirs();
-                    }
-                } else {
-                    file = new File(fileNameWithExtension);
-                }
-
                 try {
                     URL url = new URL(fileUrl);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -81,7 +83,6 @@ public class FileDownloader extends JFrame {
                     }
 
                 } catch (IOException e) {
-                    e.printStackTrace();
                     future.completeExceptionally(e); // Proper error handling
                     return null;
                 }

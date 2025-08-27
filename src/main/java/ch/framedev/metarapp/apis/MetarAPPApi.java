@@ -48,6 +48,10 @@ public class MetarAPPApi {
         instance = this;
     }
 
+    protected MetarAPPApi init() {
+        return new MetarAPPApi();
+    }
+
     /**
      * Returns the singleton instance of MetarAPPApi.
      * Initializes the token handler and returns the instance.
@@ -55,14 +59,7 @@ public class MetarAPPApi {
      * @return The singleton instance of MetarAPPApi.
      */
     public static MetarAPPApi getInstance() {
-        if (instance != null) {
-            return instance;
-        } else {
-            instance = new MetarAPPApi();
-        }
-        // Initialize the token handler with the tokens.properties file
-        // This file should contain the necessary tokens for API access
-        return instance;
+        return instance == null ? new MetarAPPApi().init() : instance;
     }
 
     /**
@@ -83,9 +80,9 @@ public class MetarAPPApi {
      * code.
      *
      * @return True if the API is online and responding successfully, false
-     *         otherwise.
-     *         If an IOException occurs during the request, the method returns
-     *         false.
+     * otherwise.
+     * If an IOException occurs during the request, the method returns
+     * false.
      */
     public boolean isMetarAPIOnline() {
         try {
@@ -106,7 +103,7 @@ public class MetarAPPApi {
         try (Response response = client.newCall(request).execute()) {
             Map<?, ?> map = new JsonUtils().classFromJsonString(response.body().string(), Map.class);
             return map.containsKey("message") && map.get("message") != null
-                    && ((String) map.get("message")).equalsIgnoreCase("OK");
+                   && ((String) map.get("message")).equalsIgnoreCase("OK");
         } catch (Exception ex) {
             Main.loggerUtils.addLog("Could not get FlightPlan Database " + ex.getMessage());
             Main.getLogger().error("Could not get FlightPlan DataBase", ex);
@@ -160,8 +157,8 @@ public class MetarAPPApi {
         if (new SystemUtils().getOSType() == SystemUtils.OSType.WINDOWS) {
             return "https://framedev.ch/files/metarapp/windows/MetarAPP-" + version.replace("\"", "") + ".exe";
         } else if (new SystemUtils().getOSType() == SystemUtils.OSType.MACOS
-                || new SystemUtils().getOSType() == SystemUtils.OSType.LINUX
-                || new SystemUtils().getOSType() == SystemUtils.OSType.OTHER) {
+                   || new SystemUtils().getOSType() == SystemUtils.OSType.LINUX
+                   || new SystemUtils().getOSType() == SystemUtils.OSType.OTHER) {
             return "https://framedev.ch/files/metarapp/unix/MetarAPP-" + version.replace("\"", "") + ".jar";
         }
         return "https://framedev.ch/files/metarapp/unix/MetarAPP-" + version.replace("\"", "") + ".jar";
@@ -176,7 +173,7 @@ public class MetarAPPApi {
      * @param version The version of the MetarAPP application for which the download
      *                links are required.
      * @return An array of strings containing the download links for the specified
-     *         version of the MetarAPP application.
+     * version of the MetarAPP application.
      * @throws IllegalArgumentException If the provided version is null or empty.
      * @throws IllegalStateException    If the version is not available for
      *                                  download.
@@ -192,7 +189,7 @@ public class MetarAPPApi {
         }
 
         // Return the download links for the specified version
-        return new String[] {
+        return new String[]{
                 "https://framedev.ch/files/metarapp/windows/MetarAPP-" + version.replace("\"", "") + ".exe",
                 "https://framedev.ch/files/metarapp/unix/MetarAPP-" + version.replace("\"", "") + ".jar"
         };
@@ -218,7 +215,7 @@ public class MetarAPPApi {
      * application.
      *
      * @return A list of lists of strings, where each inner list contains the
-     *         changelogs for a specific version.
+     * changelogs for a specific version.
      */
     public List<List<String>> getAllChangelogs() {
         ChangelogsReader changelogsReader = new ChangelogsReader();
@@ -303,7 +300,7 @@ public class MetarAPPApi {
      * and the second link is for Unix-based systems (macOS, Linux, and others).
      *
      * @return An array of strings containing the download links for the latest
-     *         version of the MetarAPP application.
+     * version of the MetarAPP application.
      */
     public String[] getLatestDownloadVersion() {
         return getDownloadStringAllTypes(Main.getNewVersion());
@@ -313,12 +310,11 @@ public class MetarAPPApi {
      * Returns an AirportRequest object for a specified ICAO code.
      *
      * @param icao The ICAO code for which to retrieve the airport request.
+     * @param icao
      * @return An AirportRequest object.
+     * @return
      * @throws IOException If an error occurs while creating the AirportRequest
      *                     object.
-     *
-     * @param icao
-     * @return
      * @throws IOException
      */
     public AirportRequest getAirportRequest(String icao) throws IOException {

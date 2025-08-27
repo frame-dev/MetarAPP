@@ -1015,5 +1015,25 @@
       "Plugin System updated"
     ],
     "release": true
+  },
+  {
+    "version": "1.6.4.4",
+    "date": "26.06.2025",
+    "bugFixes": [
+      "Plugin System Bug Fixes",
+      "Plugin Crash Fixed"
+    ],
+    "performanceFixes": [
+      "Login Performance Fixes",
+      "Database Performance Fixes",
+      "Plugin System Performance Fixes"
+    ],
+    "features": [
+      "Api Updated",
+      "Plugin System updated",
+      "Plugin Example updated",
+      "Plugin Documentation updated"
+    ],
+    "release": true
   }
 ]

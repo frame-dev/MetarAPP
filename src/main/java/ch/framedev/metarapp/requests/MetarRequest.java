@@ -30,16 +30,42 @@ public class MetarRequest {
      */
     @NotNull
     private String icao;
+    /**
+     * The Response from the API
+     */
     private Response response;
 
+    /**
+     * The Response String from the API
+     * Used for parsing the JSON
+     */
     private String responseString;
 
+    /**
+     * The number of results returned by the API
+     * Used to check if the request was successful
+     */
     private int results;
+    /**
+     * The MetarData object containing the parsed data from the API
+     */
     private MetarData metarData;
 
+    /**
+     * Utility class for text formatting
+     */
     private final TextUtils textUtils = new TextUtils();
 
+    /**
+     * The root JSON element of the response
+     * Used for parsing the JSON
+     */
     private JsonElement root;
+
+    /**
+     * The API key for the CheckWX API
+     * Decrypted from the connection token handler
+     */
     private final String key;
 
     {

@@ -12,64 +12,71 @@ public class Remember {
     private String userName;
     private String password;
     private final File rememberFile;
+    private LoginData cachedLoginData;
 
     public Remember() {
-        this.rememberFile = new File(Main.getFilePath() + "files","remember.json");
+        this.rememberFile = new File(Main.getFilePath() + "files", "remember.json");
         createFileIfNotExists();
+        loadLoginData();
     }
 
     public Remember(String userName, String password) {
-        this.rememberFile = new File(Main.getFilePath() + "files","remember.json");
+        this.rememberFile = new File(Main.getFilePath() + "files", "remember.json");
         createFileIfNotExists();
         this.userName = userName;
         this.password = password;
+        this.cachedLoginData = new LoginData(userName, password);
     }
 
     public String getUserName() {
-        try {
-            return new Gson().fromJson(new FileReader(new File(Main.getFilePath() + "files", "remember.json")), LoginData.class).getUserName();
-        } catch (FileNotFoundException | NullPointerException ex) {
-            Main.getLogger().log(Level.ERROR, "Could not load or find the remember.json file", ex);
-            return "";
-        }
+        return cachedLoginData != null && cachedLoginData.getUserName() != null
+                ? cachedLoginData.getUserName()
+                : "";
     }
 
     public String getPassword() {
-        try {
-            if(new Gson().fromJson(new FileReader(new File(Main.getFilePath() + "files", "remember.json")), LoginData.class).getPassword() != null) {
-                return new Gson().fromJson(new FileReader(new File(Main.getFilePath() + "files", "remember.json")), LoginData.class).getPassword();
-            }
-        } catch (FileNotFoundException | NullPointerException ex) {
-            Main.getLogger().log(Level.ERROR, "Could not load or find the remember.json file", ex);
-            return "Password";
-        }
-		return "Password";
+        return cachedLoginData != null && cachedLoginData.getPassword() != null
+                ? cachedLoginData.getPassword()
+                : "";
     }
 
+    /**
+     * Saves the current userName and password to the remember.json file.
+     */
     public void save() {
-        try {
-            FileWriter writer = new FileWriter(rememberFile);
-            writer.write(new GsonBuilder().setPrettyPrinting().create().toJson(new LoginData(userName, password)));
+        try (FileWriter writer = new FileWriter(rememberFile)) {
+            LoginData data = new LoginData(userName, password);
+            writer.write(new GsonBuilder().setPrettyPrinting().create().toJson(data));
             writer.flush();
-            writer.close();
+            cachedLoginData = data;
         } catch (IOException exception) {
             Main.getLogger().log(Level.ERROR, "Failed to write remember file", exception);
             throw new RuntimeException(exception);
         }
-
     }
 
     public boolean exists() {
-        return getPassword() != null;
+        return rememberFile.exists() && cachedLoginData != null;
     }
 
     private void createFileIfNotExists() {
-        if(!rememberFile.exists()) {
+        if (!rememberFile.exists()) {
             try {
-                if(!rememberFile.createNewFile())
+                if (!rememberFile.createNewFile())
                     Main.getLogger().log(Level.ERROR, "Remember File cannot be created!");
             } catch (IOException exception) {
                 Main.getLogger().log(Level.ERROR, "Error creating remember file: " + exception.getMessage(), exception);
+            }
+        }
+    }
+
+    private void loadLoginData() {
+        if (rememberFile.exists()) {
+            try (FileReader reader = new FileReader(rememberFile)) {
+                cachedLoginData = new Gson().fromJson(reader, LoginData.class);
+            } catch (IOException | NullPointerException ex) {
+                Main.getLogger().log(Level.ERROR, "Could not load or find the remember.json file", ex);
+                cachedLoginData = null;
             }
         }
     }

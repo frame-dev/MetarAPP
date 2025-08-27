@@ -24,7 +24,8 @@ public enum ErrorCode {
     ERROR_SQLITE_DATABASE("x254", 253),
     ERROR_HASHING_PASSWORD("x255", 254),
     ERROR_CREATE_ACCOUNT("x256", 255),
-    ERROR_ZIPPING_FILE("x257", 256);
+    ERROR_ZIPPING_FILE("x257", 256),
+    ERROR_LOADING_PLUGIN("x258", 257);
 
     final String errorCode;
     final int errorId;

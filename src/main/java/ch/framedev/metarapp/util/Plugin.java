@@ -1,16 +1,32 @@
 package ch.framedev.metarapp.util;
 
-public interface Plugin {
-    void initialize();
-    void start();
-    void stop();
+public abstract class Plugin {
 
-    String getName();
-    String getVersion();
-    String getDescription();
-    String getAuthor();
-    String getWebsite();
+    public static enum PluginState {
+        INITIALIZED, STARTED, STOPPED,
+        UPDATING, ERROR
+    }
 
-    String getNewVersion();
-    String getDownloadLink();
+    private PluginState pluginState = PluginState.STOPPED;
+
+    public abstract void initialize();
+    public abstract void start();
+    public abstract void stop();
+
+    public abstract String getName();
+    public abstract String getVersion();
+    public abstract String getDescription();
+    public abstract String getAuthor();
+    public abstract String getWebsite();
+
+    public void setPluginState(PluginState state) {
+        this.pluginState = state;
+    }
+
+    public PluginState getPluginState() {
+        return pluginState;
+    }
+
+    public abstract String getNewVersion();
+    public abstract String getDownloadLink();
 }

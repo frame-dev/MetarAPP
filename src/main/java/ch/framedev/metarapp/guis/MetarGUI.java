@@ -964,6 +964,7 @@ public class MetarGUI {
             JMenuItem pluginItem = new JMenuItem("Plugin Info");
             pluginItem.addActionListener(e -> printPluginInfo(plugin));
             JMenuItem pluginStart = new JMenuItem("Enable / Disable");
+            JMenuItem pluginUpdateNow = new JMenuItem("Update Plugin");
             pluginStart.addActionListener(e -> {
                 if (PluginManager.getInstance().isPluginEnabled(plugin.getName())) {
                     PluginManager.getInstance().disablePlugin(plugin.getName());
@@ -973,6 +974,14 @@ public class MetarGUI {
                     PluginManager.getInstance().enablePlugin(plugin.getName());
                     pluginStart.setText("Disable");
                     pluginMenu.setText(plugin.getName() + " - is enabled: true");
+                }
+            });
+            pluginUpdateNow.addActionListener(e -> {
+                if (PluginManager.getInstance().hasUpdate(plugin.getName())) {
+                    PluginManager.getInstance().updatePlugin(plugin.getName());
+                    JOptionPane.showMessageDialog(null, "Plugin updated successfully!");
+                } else {
+                    JOptionPane.showMessageDialog(null, "No update available for this plugin.");
                 }
             });
             JMenuItem pluginWebsite = new JMenuItem("Website");
@@ -987,6 +996,22 @@ public class MetarGUI {
                     }
                 }
             });
+            if(PluginManager.getInstance().hasUpdate(plugin.getName())) {
+                JMenuItem pluginUpdate = new JMenuItem("Update Available");
+                pluginUpdate.addActionListener(e -> {
+                    if (Desktop.isDesktopSupported()) {
+                        try {
+                            Desktop.getDesktop().browse(new URI(plugin.getDownloadLink()));
+                        } catch (IOException | URISyntaxException ex) {
+                            getLogger().error("Failed to open link : " + ErrorCode.ERROR_OPEN_LINK.getError(), ex);
+                            loggerUtils.addLog("Failed to open link : " + ErrorCode.ERROR_OPEN_LINK.getError());
+                            EventBus.dispatchErrorEvent(new ErrorEvent(ErrorCode.ERROR_OPEN_LINK, "Failed to open plugin update link"));
+                        }
+                    }
+                });
+                pluginMenu.add(pluginUpdate);
+                pluginMenu.add(pluginUpdateNow);
+            }
             pluginMenu.add(pluginItem);
             pluginMenu.add(pluginStart);
             pluginMenu.add(pluginWebsite);

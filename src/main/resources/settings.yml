@@ -7,7 +7,7 @@ remember: false
 # Not in use by the Program
 offline-mode: false
 # Do not change this!
-version: 1.6.4.3
+version: 1.6.4.4
 download-folder: downloads
 # Also available in the Settings
 auto-login: false
@@ -17,7 +17,7 @@ popup-new-version: false
 auto-restart-after-update: false
 # Current Locales (en-En, de-De, ru-Ru, it-It)
 language: en-En
-# Current Database (mysql, sqlite, mongodb, mysql-use-own)
+# Current Database (mysql, sqlite, mongodb, mysql-use-own, file)
 database: mysql
 mysql:
   own-mysql-database: false

@@ -1,6 +1,8 @@
 package ch.framedev.metarapp.util;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -11,6 +13,9 @@ import java.util.ServiceLoader;
 
 import ch.framedev.metarapp.main.Main;
 
+/**
+ * TODO: Require Testing
+ */
 public class PluginManager {
     private static PluginManager instance;
     private static final String PLUGIN_DIRECTORY = Main.utils.getFilePath(Main.class) + "plugins"; // Directory where
@@ -60,12 +65,14 @@ public class PluginManager {
                     found = true;
                     System.out.println("Loaded plugin: " + plugin.getName());
                     loadedPlugins.put(plugin.getName(), plugin);
+                    plugin.setPluginState(Plugin.PluginState.INITIALIZED);
                 }
                 if (!found) {
                     System.out.println("No plugins found in JAR: " + jar.getName());
                 }
             } catch (Exception e) {
                 System.err.println("Failed to load from: " + jar.getName());
+                System.err.println("Error: " + e.getMessage() + "| Error Code: " + ErrorCode.ERROR_LOADING_PLUGIN.getErrorCode());
                 e.printStackTrace();
             }
         }
@@ -92,9 +99,11 @@ public class PluginManager {
                 for (Plugin plugin : loader) {
                     System.out.println("Loaded plugin: " + plugin.getName());
                     loadedPlugins.put(plugin.getName(), plugin);
+                    plugin.setPluginState(Plugin.PluginState.INITIALIZED);
                 }
             } catch (Exception e) {
-                System.err.println("Failed to load plugin: " + pluginName);
+                System.err.println("Failed to load from: " + jar.getName());
+                System.err.println("Error: " + e.getMessage() + "| Error Code: " + ErrorCode.ERROR_LOADING_PLUGIN.getErrorCode());
                 e.printStackTrace();
             }
         }
@@ -146,6 +155,7 @@ public class PluginManager {
         Plugin plugin = loadedPlugins.get(pluginName);
         if (plugin != null && !Boolean.TRUE.equals(pluginEnabled.get(pluginName))) {
             plugin.start();
+            plugin.setPluginState(Plugin.PluginState.STARTED);
             pluginEnabled.put(pluginName, true);
             System.out.println("Enabled plugin: " + pluginName);
         }
@@ -155,6 +165,7 @@ public class PluginManager {
         Plugin plugin = loadedPlugins.get(pluginName);
         if (plugin != null && Boolean.TRUE.equals(pluginEnabled.get(pluginName))) {
             plugin.stop();
+            plugin.setPluginState(Plugin.PluginState.STOPPED);
             pluginEnabled.put(pluginName, false);
             System.out.println("Disabled plugin: " + pluginName);
         }
@@ -167,6 +178,28 @@ public class PluginManager {
     public void updatePlugin(String pluginName) {
         // Logic to update a specific plugin
         System.out.println("Updating plugin: " + pluginName);
+        Plugin plugin = loadedPlugins.get(pluginName);
+        String url = plugin.getDownloadLink();
+        if (url != null && !url.isEmpty()) {
+            try {
+                plugin.setPluginState(Plugin.PluginState.UPDATING);
+                disablePlugin(pluginName);
+                // Simulate downloading the plugin
+                System.out.println("Downloading plugin from: " + url);
+
+                // Main.utils.download(url, PLUGIN_DIRECTORY + File.separator + pluginName + ".jar");
+                // After downloading, we can reload the plugin
+                loadedPlugins.remove(pluginName);
+                pluginEnabled.remove(pluginName);
+                loadPlugin(pluginName);
+                enablePlugin(pluginName);
+                System.out.println("Plugin " + pluginName + " updated successfully.");
+            } catch (Exception e) {
+                handlePluginError(pluginName, e);
+            }
+        } else {
+            System.out.println("No download link available for plugin: " + pluginName);
+        }
     }
 
     public void reloadPlugin(String pluginName) {
@@ -241,6 +274,29 @@ public class PluginManager {
             }
         }
         return enabledPlugins;
+    }
+
+    /**
+     * Checks for plugins that have updates available.
+     * @return List of plugins with updates available.
+     */
+    public List<Plugin> getUpdatePlugins() {
+        List<Plugin> updatePlugins = new ArrayList<>();
+        for (Plugin plugin : loadedPlugins.values()) {
+            if(!plugin.getVersion().equalsIgnoreCase(plugin.getNewVersion())) {
+                updatePlugins.add(plugin);
+                System.out.println("Plugin " + plugin.getName() + " has an update available: " + plugin.getNewVersion());
+            }
+        }
+        return updatePlugins;
+    }
+
+    public boolean hasUpdate(String pluginName) {
+        Plugin plugin = loadedPlugins.get(pluginName);
+        if (plugin != null) {
+            return !plugin.getVersion().equalsIgnoreCase(plugin.getNewVersion());
+        }
+        return false;
     }
 
 }

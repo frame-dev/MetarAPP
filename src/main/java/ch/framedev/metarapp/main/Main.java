@@ -33,13 +33,17 @@ import java.util.concurrent.CompletableFuture;
 public class Main {
 
     public static String[] args;
+
+    // Settings variable
     public static FileConfiguration settings;
+
+    // Changelogs reader variable
     public static ChangelogsReader changelogsReader;
 
     // TODO Change on every Version
-    public static final String VERSION = "1.6.4.3";
+    public static final String VERSION = "1.6.4.4";
     public static String preRelease = "1.6.4.3-PRE-RELEASE";
-    public static final String BUILD_NUMBER = "1.6.4.3-1013";
+    public static final String BUILD_NUMBER = "1.6.4.4-1014";
 
     // Development variables
     // TODO Change on publish
@@ -59,6 +63,8 @@ public class Main {
     public static LocaleUtils localeUtils;
     public static Variables variables;
     public static LoggerUtils loggerUtils;
+
+    // For event
     public static String from;
 
     // Update Branch
@@ -78,18 +84,19 @@ public class Main {
         // Logger Utils
         loggerUtils = new LoggerUtils();
 
+        // Setup the logger
         setupSettingsAndMoveFiles();
 
         // Deletes the old installed Versions
         if (!deleteOldVersion())
             getLogger().error("Could not delete old installed Version!");
 
-        if (hasUpdate() && branch.equalsIgnoreCase("release")) {
+        /*if (hasUpdate() && branch.equalsIgnoreCase("release")) {
             new TextUtils().printBox("There is a new version available!", "[" + getNewVersion() + "]");
         } else if (hasUpdatePreRelease()) {
             new TextUtils().printBox("There is a new Pre-Release version available!",
                     "[" + getLatestPreRelease() + "]");
-        }
+        }*/
 
         // Setup Variables
         variables = new Variables();
@@ -135,17 +142,17 @@ public class Main {
             try {
                 ch.framedev.metarapp.cli.Main.main(args);
             } catch (IOException | ch.framedev.metarapp.cli.utils.LocaleNotFoundException e) {
-                e.printStackTrace();
+                logger.log(Level.ERROR, "Error in CLI mode: " + e.getMessage());
             }
             return;
         }
         // Database initialization
         database = new Database();
-        if (database.isMySQLOrSQLite()) {
-            database.createTableIfNotExists();
-            database.createTableIfNotExistsUtilities();
-        }
         try {
+            if (database.isMySQLOrSQLite()) {
+                database.createTableIfNotExists();
+                database.createTableIfNotExistsUtilities();
+            }
             if (!database.existsUser("admin"))
                 database.createAdminAccount();
         } catch (SQLException e) {
