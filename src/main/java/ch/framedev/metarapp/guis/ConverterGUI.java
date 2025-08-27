@@ -30,10 +30,8 @@ public class ConverterGUI extends JFrame {
         setContentPane(panel);
 
         JButton infoButton = new JButton("Info");
-        infoButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this,
-                    "You can also use Decimal numbers like 2.6");
-        });
+        infoButton.addActionListener(e -> JOptionPane.showMessageDialog(this,
+                "You can also use Decimal numbers like 2.6"));
 
         // Create checkboxes for selecting the conversion direction
         JCheckBox metersToMiles = new JCheckBox("Meters to Miles");
@@ -48,9 +46,7 @@ public class ConverterGUI extends JFrame {
         JTextArea outputField = new JTextArea("Output");
 
         // Add an action listener to the submit button for handling the conversion logic
-        submitButton.addActionListener(listener -> {
-            submitConvert(inputField, outputField, metersToMiles, milesToMeters);
-        });
+        submitButton.addActionListener(listener -> submitConvert(inputField, outputField, metersToMiles, milesToMeters));
 
         // Add the components to the panel
         panel.add(infoButton);

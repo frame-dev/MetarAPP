@@ -1,5 +1,6 @@
 package ch.framedev.metarapp.util;
 
+@SuppressWarnings("unused")
 public enum ErrorCode {
 
     ERROR_404("x404", 404),

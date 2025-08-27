@@ -16,8 +16,6 @@ public class FileDownloader extends JFrame {
     private final JProgressBar progressBar;
     private final JLabel statusLabel;
     private final String fileUrl;
-    private final String location;
-    private final String fileNameWithExtension;
 
     private final File file;
 
@@ -29,16 +27,16 @@ public class FileDownloader extends JFrame {
         setLayout(new BorderLayout());
 
         this.fileUrl = fileUrl;
-        this.location = location;
-        this.fileNameWithExtension = fileNameWithExtensions;
 
         if (location != null) {
-            file = new File(location, fileNameWithExtension);
+            file = new File(location, fileNameWithExtensions);
             if (file.getParentFile() != null && !file.getParentFile().exists()) {
-                file.getParentFile().mkdirs();
+                if(!file.getParentFile().mkdirs()) {
+                    throw new RuntimeException("Failed to create directory: " + file.getParentFile().getAbsolutePath());
+                }
             }
         } else {
-            file = new File(fileNameWithExtension);
+            file = new File(fileNameWithExtensions);
         }
 
         statusLabel = new JLabel("Preparing download...", SwingConstants.CENTER);

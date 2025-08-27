@@ -2,6 +2,7 @@ package ch.framedev.metarapp.util;
 
 import ch.framedev.metarapp.main.Main;
 
+@SuppressWarnings("unused")
 public class ErrorMessages {
 
     public static String getErrorLocaleDoesNotExists(String filePath, String errorCode) {

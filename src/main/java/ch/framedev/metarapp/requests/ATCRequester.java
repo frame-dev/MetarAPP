@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
+@SuppressWarnings("unused")
 public class ATCRequester {
 
     String icao;
@@ -38,18 +39,15 @@ public class ATCRequester {
 
     public ATCRequester(@NotNull String icao) throws IOException {
         this.icao = icao;
-        OkHttpClient client = new OkHttpClient().newBuilder().addInterceptor(new Interceptor() {
-            @NotNull
-            public Response intercept(Interceptor.@NotNull Chain chain) throws IOException {
-                Request original = chain.request();
+        OkHttpClient client = new OkHttpClient().newBuilder().addInterceptor(chain -> {
+            Request original = chain.request();
 
-                // Request customization: add request headers
-                Request.Builder requestBuilder = original.newBuilder()
-                        .header("Authorization", key); // <-- this is the important line
+            // Request customization: add request headers
+            Request.Builder requestBuilder = original.newBuilder()
+                    .header("Authorization", key); // <-- this is the important line
 
-                Request request = requestBuilder.build();
-                return chain.proceed(request);
-            }
+            Request request = requestBuilder.build();
+            return chain.proceed(request);
         }).build();
         Request request = new Request.Builder()
                 .url("https://airportdb.io/api/v1/airport/"+icao+"?apiToken=" + key)

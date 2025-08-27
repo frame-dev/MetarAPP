@@ -69,14 +69,10 @@ public class LoginFrame {
             }
         }
 
-        registerButton.addActionListener(listener -> {
-            createUser(usernameTextField, passwordPasswordField);
-        });
+        registerButton.addActionListener(listener -> createUser(usernameTextField, passwordPasswordField));
 
         // Login is Required for the Program
-        loginButton.addActionListener(listener -> {
-            login(usernameTextField, passwordPasswordField);
-        });
+        loginButton.addActionListener(listener -> login(usernameTextField, passwordPasswordField));
 
         if ((boolean) Main.settings.get("dark-mode")) {
             usernameTextField.setBackground(Color.LIGHT_GRAY);
@@ -143,19 +139,16 @@ public class LoginFrame {
             try {
                 Main.from = "login";
                 EventBus.dispatchLoginEvent(new LoginEvent(username, (boolean) Main.settings.get("remember"), true));
-                new Thread() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(1000); // Wait for 1 second before launching MetarGUI
-                            MetarGUI.main(Main.args);
-                        } catch (InterruptedException e) {
-                            Thread.currentThread().interrupt();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(1000); // Wait for 1 second before launching MetarGUI
+                        MetarGUI.main(args);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    } catch (Exception e) {
+                        Main.getLogger().error(e.getMessage(), e);
                     }
-                }.start();
+                }).start();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -204,9 +197,7 @@ public class LoginFrame {
     }
 
     private void getButton() {
-        changePasswordButton.addActionListener(listener -> {
-            changePasswordAction();
-        });
+        changePasswordButton.addActionListener(listener -> changePasswordAction());
     }
 
     private void changePasswordAction() {
@@ -242,9 +233,7 @@ public class LoginFrame {
     private @NotNull JButton getChangeButton(JTextField userName, JPasswordField oldPassword, JPasswordField newPassword) {
         JButton changeButton = new JButton("Change Password");
 
-        changeButton.addActionListener(list -> {
-            changePassword(userName, oldPassword, newPassword);
-        });
+        changeButton.addActionListener(list -> changePassword(userName, oldPassword, newPassword));
         return changeButton;
     }
 

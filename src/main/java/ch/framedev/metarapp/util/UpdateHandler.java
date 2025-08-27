@@ -19,8 +19,10 @@ import org.apache.log4j.Level;
 import static ch.framedev.metarapp.main.Main.getLogger;
 import static ch.framedev.metarapp.main.Main.loggerUtils;
 
+@SuppressWarnings("unused")
 public class UpdateHandler {
 
+    @SuppressWarnings("BusyWait")
     public void init() {
         Thread thread = new Thread(() -> {
             long minutes;
@@ -145,7 +147,7 @@ public class UpdateHandler {
         return null;
     }
 
-    public static List<String> getAllVersions() throws IOException {
+    public static List<String> getAllVersions() {
         try {
             JsonElement jsonElement = JsonParser
                     .parseReader(new InputStreamReader(versionUrl.openConnection().getInputStream()));

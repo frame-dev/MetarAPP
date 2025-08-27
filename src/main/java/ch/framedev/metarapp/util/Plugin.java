@@ -1,8 +1,9 @@
 package ch.framedev.metarapp.util;
 
+@SuppressWarnings("unused")
 public abstract class Plugin {
 
-    public static enum PluginState {
+    public enum PluginState {
         INITIALIZED, STARTED, STOPPED,
         UPDATING, ERROR
     }

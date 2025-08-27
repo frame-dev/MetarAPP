@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class LoggerUtils {
 
     private final List<String> logs;

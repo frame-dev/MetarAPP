@@ -29,11 +29,13 @@ public class ConnectionsHandler {
     public ConnectionsHandler() {
         File file = new File(Main.getFilePath() + "files", "connections.properties");
         if(!new File(Main.getFilePath() + "files", "connections.properties").exists()) {
-            new File(Main.getFilePath() + "files", "connections.properties").getParentFile().mkdir();
+            if(!new File(Main.getFilePath() + "files", "connections.properties").getParentFile().mkdir()) {
+                Main.getLogger().error("Could not create directory for connections.properties");
+            }
             try {
             Files.copy(utils.getFromResourceFile("connections.properties", Main.class).toPath(), file.toPath());
             } catch (Exception ex) {
-                ex.printStackTrace();
+                Main.getLogger().error(ex.getMessage(), ex);
             }
         }
         try {

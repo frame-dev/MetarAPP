@@ -70,6 +70,7 @@ public class FullJsonGUI extends JFrame {
         setVisible(true);
     }
 
+    @SuppressWarnings("unused")
     public FullJsonGUI(String data, boolean open) {
         setTitle("FullJsonGui");
         panel = new JPanel();

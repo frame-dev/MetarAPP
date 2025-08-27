@@ -71,6 +71,7 @@ public class ChangelogsReader {
         return null;
     }
 
+    @SuppressWarnings("unused")
     public List<Changelog> getAllPreReleaseChangelogs() {
         List<Changelog> changelogList = new ArrayList<>();
         for (Changelog changelog : changelogs) {

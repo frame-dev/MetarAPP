@@ -69,6 +69,7 @@ public class Main {
     // Update Branch
     public static String branch;
 
+    @SuppressWarnings("CommentedOutCode")
     public static void main(String[] args) {
         BasicConfigurator.configure();
         Main.args = args;
@@ -90,7 +91,8 @@ public class Main {
         if (!deleteOldVersion())
             getLogger().error("Could not delete old installed Version!");
 
-        /*if (hasUpdate() && branch.equalsIgnoreCase("release")) {
+        /*
+        if (hasUpdate() && branch.equalsIgnoreCase("release")) {
             new TextUtils().printBox("There is a new version available!", "[" + getNewVersion() + "]");
         } else if (hasUpdatePreRelease()) {
             new TextUtils().printBox("There is a new Pre-Release version available!",
@@ -226,9 +228,13 @@ public class Main {
     public static void setupSettingsAndMoveFiles() {
         if (isOs(SystemUtils.OSType.MACOS) || isOs(SystemUtils.OSType.LINUX) || isOs(SystemUtils.OSType.OTHER)) {
             if (!new File(getFilePath() + "files", "settings.yml").exists()) {
-                new File(getFilePath() + "files", "settings.yml").getParentFile().mkdir();
+                if(!new File(getFilePath() + "files", "settings.yml").getParentFile().mkdir()) {
+                    Main.getLogger().error("Could not create directory for settings.yml");
+                }
                 try {
-                    new File(getFilePath() + "files", "settings.yml").createNewFile();
+                    if(!new File(getFilePath() + "files", "settings.yml").createNewFile()) {
+                        Main.getLogger().error("Could not create settings.yml file");
+                    }
                     Files.copy(utils.getFromResourceFile("settings.yml", Main.class).toPath(),
                             new File(getFilePath() + "files", "settings.yml").toPath(),
                             StandardCopyOption.REPLACE_EXISTING);
@@ -258,9 +264,13 @@ public class Main {
 
         } else if (isOs(SystemUtils.OSType.WINDOWS)) {
             if (!new File(getFilePath() + "files", "settings.yml").exists()) {
-                new File(getFilePath() + "files", "settings.yml").getParentFile().mkdir();
+                if(!new File(getFilePath() + "files", "settings.yml").getParentFile().mkdir()) {
+                    Main.getLogger().error("Could not create directory for settings.yml");
+                }
                 try {
-                    new File(getFilePath() + "files", "settings.yml").createNewFile();
+                    if(!new File(getFilePath() + "files", "settings.yml").createNewFile()) {
+                        Main.getLogger().error("Could not create settings.yml file");
+                    }
                     Files.copy(utils.getFromResourceFile("settings.yml", Main.class).toPath(),
                             new File(getFilePath() + "files", "settings.yml").toPath(),
                             StandardCopyOption.REPLACE_EXISTING);
@@ -592,7 +602,7 @@ public class Main {
 
             if ((fileName.endsWith(".exe") || fileName.endsWith(".jar")) && fileName.startsWith("MetarAPP")) {
                 String suffix = getFileSuffix(fileName); // e.g., "jar" or "exe"
-                boolean isCurrentVersion = false;
+                boolean isCurrentVersion;
 
                 String expectedFileName = "";
                 if ("release".equalsIgnoreCase(branch)) {
@@ -787,8 +797,6 @@ public class Main {
                     "https://framedev.ch/files/metarapp/windows/MetarAPP-" + release + ".exe", result,
                     "MetarAPP-" + release + ".exe");
             return downloader.startDownload();
-            // download("https://framedev.ch/files/metarapp/windows/MetarAPP-" + release +
-            // ".exe", result, "MetarAPP-" + release + ".exe");
         } else if (new SystemUtils().getOSType() == SystemUtils.OSType.MACOS
                 || new SystemUtils().getOSType() == SystemUtils.OSType.LINUX
                 || new SystemUtils().getOSType() == SystemUtils.OSType.OTHER) {
@@ -800,8 +808,6 @@ public class Main {
                     "https://framedev.ch/files/metarapp/unix/MetarAPP-" + release + ".jar", result,
                     "MetarAPP-" + release + ".jar");
             return downloader.startDownload();
-            // download("https://framedev.ch/files/metarapp/unix/MetarAPP-" + release +
-            // ".jar", result, "MetarAPP-" + release + ".jar");
         }
         return CompletableFuture.completedFuture(false);
     }
@@ -811,7 +817,9 @@ public class Main {
         if (location != null) {
             file = new File(location, fileNameWithExtensions);
             if (file.getParentFile() != null && !file.getParentFile().exists())
-                file.getParentFile().mkdirs();
+                if(!file.getParentFile().mkdirs()) {
+                    Main.getLogger().error("Could not create directory for " + fileNameWithExtensions);
+                }
         } else {
             file = new File(fileNameWithExtensions);
         }
@@ -827,21 +835,21 @@ public class Main {
                 fout.write(data, 0, count);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            getLogger().error(e.getMessage(), e);
         } finally {
             try {
                 if (in != null) {
                     in.close();
                 }
             } catch (final IOException e) {
-                e.printStackTrace();
+                getLogger().error(e.getMessage(), e);
             }
             try {
                 if (fout != null) {
                     fout.close();
                 }
             } catch (final IOException e) {
-                e.printStackTrace();
+                getLogger().error(e.getMessage(), e);
             }
         }
     }

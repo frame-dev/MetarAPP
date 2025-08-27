@@ -1,8 +1,6 @@
 package ch.framedev.metarapp.util;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -16,6 +14,7 @@ import ch.framedev.metarapp.main.Main;
 /**
  * TODO: Require Testing
  */
+@SuppressWarnings("unused")
 public class PluginManager {
     private static PluginManager instance;
     private static final String PLUGIN_DIRECTORY = Main.utils.getFilePath(Main.class) + "plugins"; // Directory where
@@ -25,9 +24,10 @@ public class PluginManager {
     private PluginManager() {
         File pluginDir = new File(PLUGIN_DIRECTORY);
         if (!pluginDir.exists()) {
-            pluginDir.mkdirs();
+            if(!pluginDir.mkdirs()) {
+                throw new RuntimeException("Failed to create plugin directory: " + pluginDir.getAbsolutePath());
+            }
             System.out.println("Plugin directory created at " + pluginDir.getAbsolutePath());
-            return;
         }
     }
 
@@ -41,7 +41,9 @@ public class PluginManager {
     public void loadPlugins() {
         File pluginDir = new File(PLUGIN_DIRECTORY);
         if (!pluginDir.exists()) {
-            pluginDir.mkdirs();
+            if(!pluginDir.mkdirs()) {
+                throw new RuntimeException("Failed to create plugin directory: " + pluginDir.getAbsolutePath());
+            }
             System.out.println("Plugin directory created at " + pluginDir.getAbsolutePath());
             return;
         }
@@ -73,7 +75,7 @@ public class PluginManager {
             } catch (Exception e) {
                 System.err.println("Failed to load from: " + jar.getName());
                 System.err.println("Error: " + e.getMessage() + "| Error Code: " + ErrorCode.ERROR_LOADING_PLUGIN.getErrorCode());
-                e.printStackTrace();
+                Main.getLogger().error(e.getMessage(), e);
             }
         }
     }
@@ -104,7 +106,7 @@ public class PluginManager {
             } catch (Exception e) {
                 System.err.println("Failed to load from: " + jar.getName());
                 System.err.println("Error: " + e.getMessage() + "| Error Code: " + ErrorCode.ERROR_LOADING_PLUGIN.getErrorCode());
-                e.printStackTrace();
+                Main.getLogger().error(e.getMessage(), e);
             }
         }
     }

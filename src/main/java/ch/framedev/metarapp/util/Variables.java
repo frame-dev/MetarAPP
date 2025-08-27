@@ -11,7 +11,7 @@ import java.net.URL;
 
 import static ch.framedev.metarapp.main.Main.branch;
 import static ch.framedev.metarapp.main.Main.utils;
-
+@SuppressWarnings("unused")
 public class Variables {
 
     public static String FILES_DIRECTORY;

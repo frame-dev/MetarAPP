@@ -60,6 +60,26 @@ public class LastSearch extends JFrame {
                 }
             }
         });
+        JTextField favouriteTextField = getJTextField();
+        panel.add(stringList);
+
+        JButton deleteButton = getButton();
+        panel.add(deleteButton);
+
+        panel.add(favouriteTextField);
+
+        if ((boolean) Main.settings.get("dark-mode")) {
+            setColorButton(deleteButton);
+            panel.setBackground(Color.DARK_GRAY);
+            stringList.setBackground(Color.GRAY);
+            stringList.setForeground(Color.WHITE);
+        }
+
+        pack();
+        setVisible(true);
+    }
+
+    private @NotNull JTextField getJTextField() {
         JTextField favouriteTextField = new JTextField();
         favouriteTextField.addKeyListener(new KeyAdapter() {
             @Override
@@ -90,22 +110,7 @@ public class LastSearch extends JFrame {
                 }
             }
         });
-        panel.add(stringList);
-
-        JButton deleteButton = getButton();
-        panel.add(deleteButton);
-
-        panel.add(favouriteTextField);
-
-        if ((boolean) Main.settings.get("dark-mode")) {
-            setColorButton(deleteButton);
-            panel.setBackground(Color.DARK_GRAY);
-            stringList.setBackground(Color.GRAY);
-            stringList.setForeground(Color.WHITE);
-        }
-
-        pack();
-        setVisible(true);
+        return favouriteTextField;
     }
 
     private void setIcao() {
@@ -262,7 +267,9 @@ public class LastSearch extends JFrame {
         File file = new File(Main.getFilePath() + "files", "favourite_icao.txt");
         if (!file.exists()) {
             try {
-                file.createNewFile();
+                if(!file.createNewFile()) {
+                    getLogger().log(Level.ERROR, "Could not create favourite ICAO file");
+                }
             } catch (Exception ex) {
                 getLogger().log(Level.ERROR, "Error creating favourite ICAO file: " + ex.getMessage(), ex);
             }

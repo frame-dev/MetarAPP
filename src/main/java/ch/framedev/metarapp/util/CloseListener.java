@@ -9,8 +9,8 @@ import ch.framedev.metarapp.main.Main;
 
 public class CloseListener extends WindowAdapter {
 
-    private String from;
-    private String to;
+    private final String from;
+    private final String to;
 
     public CloseListener(String from, String to) {
         this.from = from;

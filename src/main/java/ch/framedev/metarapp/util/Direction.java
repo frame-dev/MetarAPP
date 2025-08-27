@@ -3,6 +3,7 @@ package ch.framedev.metarapp.util;
 import javax.swing.*;
 import java.util.HashMap;
 
+@SuppressWarnings("unused")
 public enum Direction {
 
 

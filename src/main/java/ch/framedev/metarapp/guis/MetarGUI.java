@@ -45,6 +45,7 @@ import java.util.concurrent.CompletionException;
 import static ch.framedev.metarapp.main.Main.*;
 import static ch.framedev.metarapp.util.Variables.BRANCH;
 
+@SuppressWarnings("UnnecessaryReturnStatement")
 public class MetarGUI {
 
     public static MetarRequest metarRequest;
@@ -210,9 +211,7 @@ public class MetarGUI {
         String userName = LoginUtils.userNameStatic;
 
         CompletableFuture<Integer> usedFuture = database.getUsed(userName)
-                .thenApply(value -> {
-                    return value != null ? value : 0;
-                })
+                .thenApply(value -> value != null ? value : 0)
                 .exceptionally(ex -> {
                     logError("Failed to get 'used' value for user: " + userName, ex);
                     return 0; // Default value
@@ -312,6 +311,7 @@ public class MetarGUI {
         loggerUtils.addLog("There is a new Pre-Release version available! [" + getLatestPreRelease() + "]");
     }
 
+    @SuppressWarnings("UnnecessaryReturnStatement")
     public void doClick() {
         ICAOCODETextField.setText(
                     EventBus.dispatchSendIcaoEvent(new SendIcaoEvent(ICAOCODETextField.getText().toUpperCase())));
@@ -607,7 +607,7 @@ public class MetarGUI {
                     EventBus.dispatchDisplayMetarEvent(new DisplayMetarEvent(ICAOCODETextField.getText(),
                             MetarAPPApi.getInstance().getMetarData(MetarGUI.metarRequest.getIcao()).toString()));
                 } catch (IOException e1) {
-                    e1.printStackTrace();
+                    getLogger().error(e1.getMessage(), e1);
                 }
             } else {
                 JOptionPane.showMessageDialog(frame,
@@ -835,12 +835,6 @@ public class MetarGUI {
                                 }
                                 frame.pack();
                             });
-                            // windLabel.setText(Direction.getDirectionSymbol(metarRequest.getWind().getDegrees()
-                            // - (int) airportRequest.getBearing(runwayTextField.getText())) + " " +
-                            // metarRequest.getWind().getSpeed_kts() + "kt");
-                            // windLabel.setText("Wind : " +
-                            // metarAPI.getWind().get("speed_kts").getAsString() + "kt from " +
-                            // metarAPI.getWind().get("degrees").getAsString() + "°");
                         } else {
                             JOptionPane.showMessageDialog(null, "You need to be Logged in to use this Feature.",
                                     "Message", JOptionPane.PLAIN_MESSAGE);
@@ -911,19 +905,7 @@ public class MetarGUI {
         JMenu info = new JMenu("Info");
         JMenu account = new JMenu("Account Info");
 
-        JMenuItem infoText = new JMenuItem("Info");
-        String version;
-        if (branch.equalsIgnoreCase("release"))
-            version = BUILD_NUMBER;
-        else
-            version = preRelease;
-        infoText.addActionListener(listener -> {
-            MessageWithLink messageWithLink = new MessageWithLink(
-                    "This Program is created by Framedev (<br><a href=\"https://framedev.ch\">https://framedev.ch</a>) \n"
-                            +
-                            "Version : " + version);
-            JOptionPane.showMessageDialog(null, messageWithLink, "Info", JOptionPane.PLAIN_MESSAGE);
-        });
+        JMenuItem infoText = getInfoText();
 
         JMenuItem help = new JMenuItem("Help");
         help.addActionListener(Listener -> JOptionPane.showMessageDialog(null, new MessageWithLink(
@@ -932,18 +914,7 @@ public class MetarGUI {
         license.addActionListener(listener -> JOptionPane.showMessageDialog(null,
                 new MessageWithLink(localeUtils.getString("infoMessage"))));
 
-        JMenuItem logout = new JMenuItem("Logout");
-        logout.addActionListener(listener -> {
-            String message = EventBus.dispatchLogoutEvent(new LogoutEvent(LoginUtils.userNameStatic,
-                    "You have been logged out successfully." + LoginUtils.userNameStatic));
-            frame.setVisible(false);
-            LoginUtils.userNameStatic = "";
-            LoginUtils.active = false;
-            MetarGUI.logOut = true;
-            LoginFrame.main(args);
-            JOptionPane.showMessageDialog(null,
-                    message, "Logout", JOptionPane.INFORMATION_MESSAGE);
-        });
+        JMenuItem logout = getLogout();
 
         info.add(infoText);
         info.add(help);
@@ -984,31 +955,9 @@ public class MetarGUI {
                     JOptionPane.showMessageDialog(null, "No update available for this plugin.");
                 }
             });
-            JMenuItem pluginWebsite = new JMenuItem("Website");
-            pluginWebsite.addActionListener(e -> {
-                if (Desktop.isDesktopSupported()) {
-                    try {
-                        Desktop.getDesktop().browse(new URI(plugin.getWebsite()));
-                    } catch (IOException | URISyntaxException ex) {
-                        getLogger().error("Failed to open link : " + ErrorCode.ERROR_OPEN_LINK.getError(), ex);
-                        loggerUtils.addLog("Failed to open link : " + ErrorCode.ERROR_OPEN_LINK.getError());
-                        EventBus.dispatchErrorEvent(new ErrorEvent(ErrorCode.ERROR_OPEN_LINK, "Failed to open plugin website link"));
-                    }
-                }
-            });
+            JMenuItem pluginWebsite = getPluginWebsite(plugin);
             if(PluginManager.getInstance().hasUpdate(plugin.getName())) {
-                JMenuItem pluginUpdate = new JMenuItem("Update Available");
-                pluginUpdate.addActionListener(e -> {
-                    if (Desktop.isDesktopSupported()) {
-                        try {
-                            Desktop.getDesktop().browse(new URI(plugin.getDownloadLink()));
-                        } catch (IOException | URISyntaxException ex) {
-                            getLogger().error("Failed to open link : " + ErrorCode.ERROR_OPEN_LINK.getError(), ex);
-                            loggerUtils.addLog("Failed to open link : " + ErrorCode.ERROR_OPEN_LINK.getError());
-                            EventBus.dispatchErrorEvent(new ErrorEvent(ErrorCode.ERROR_OPEN_LINK, "Failed to open plugin update link"));
-                        }
-                    }
-                });
+                JMenuItem pluginUpdate = getPluginUpdate(plugin);
                 pluginMenu.add(pluginUpdate);
                 pluginMenu.add(pluginUpdateNow);
             }
@@ -1027,6 +976,71 @@ public class MetarGUI {
         return menuBar;
     }
 
+    private static JMenuItem getPluginWebsite(Plugin plugin) {
+        JMenuItem pluginWebsite = new JMenuItem("Website");
+        pluginWebsite.addActionListener(e -> {
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(plugin.getWebsite()));
+                } catch (IOException | URISyntaxException ex) {
+                    getLogger().error("Failed to open link : " + ErrorCode.ERROR_OPEN_LINK.getError(), ex);
+                    loggerUtils.addLog("Failed to open link : " + ErrorCode.ERROR_OPEN_LINK.getError());
+                    EventBus.dispatchErrorEvent(new ErrorEvent(ErrorCode.ERROR_OPEN_LINK, "Failed to open plugin website link"));
+                }
+            }
+        });
+        return pluginWebsite;
+    }
+
+    private static JMenuItem getPluginUpdate(Plugin plugin) {
+        JMenuItem pluginUpdate = new JMenuItem("Update Available");
+        pluginUpdate.addActionListener(e -> {
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(plugin.getDownloadLink()));
+                } catch (IOException | URISyntaxException ex) {
+                    getLogger().error("Failed to open link : " + ErrorCode.ERROR_OPEN_LINK.getError(), ex);
+                    loggerUtils.addLog("Failed to open link : " + ErrorCode.ERROR_OPEN_LINK.getError());
+                    EventBus.dispatchErrorEvent(new ErrorEvent(ErrorCode.ERROR_OPEN_LINK, "Failed to open plugin update link"));
+                }
+            }
+        });
+        return pluginUpdate;
+    }
+
+    private static @NotNull JMenuItem getLogout() {
+        JMenuItem logout = new JMenuItem("Logout");
+        logout.addActionListener(listener -> {
+            String message = EventBus.dispatchLogoutEvent(new LogoutEvent(LoginUtils.userNameStatic,
+                    "You have been logged out successfully." + LoginUtils.userNameStatic));
+            frame.setVisible(false);
+            LoginUtils.userNameStatic = "";
+            LoginUtils.active = false;
+            MetarGUI.logOut = true;
+            LoginFrame.main(args);
+            JOptionPane.showMessageDialog(null,
+                    message, "Logout", JOptionPane.INFORMATION_MESSAGE);
+        });
+        return logout;
+    }
+
+    private static @NotNull JMenuItem getInfoText() {
+        JMenuItem infoText = new JMenuItem("Info");
+        String version;
+        if (branch.equalsIgnoreCase("release"))
+            version = BUILD_NUMBER;
+        else
+            version = preRelease;
+        infoText.addActionListener(listener -> {
+            MessageWithLink messageWithLink = new MessageWithLink(
+                    "This Program is created by Framedev (<br><a href=\"https://framedev.ch\">https://framedev.ch</a>) \n"
+                            +
+                            "Version : " + version);
+            JOptionPane.showMessageDialog(null, messageWithLink, "Info", JOptionPane.PLAIN_MESSAGE);
+        });
+        return infoText;
+    }
+
     private static void printPluginInfo(Plugin plugin) {
         JOptionPane.showMessageDialog(null, plugin.getDescription(), plugin.getName() + "-" + plugin.getVersion(),
                 JOptionPane.INFORMATION_MESSAGE);
@@ -1043,20 +1057,17 @@ public class MetarGUI {
         documentsMenu.add(errorExplanationMenuItem);
         documentsMenu.add(apiExplanationMenu);
         JMenu pluginMenu = new JMenu("Plugin Documentation");
-        JMenuItem pluginExample = new JMenuItem("Plugin Example (Text Editor)");
-        pluginExample.addActionListener(e -> {
-            if (Desktop.isDesktopSupported()) {
-                try {
-                    Desktop.getDesktop().browse(new URI("file://"
-                            + new File(Variables.DOCUMENTS_DIRECTORY, "plugin_example.md").getAbsolutePath()));
-                } catch (IOException | URISyntaxException ex) {
-                    getLogger().error("Failed to open link : " + ErrorCode.ERROR_OPEN_LINK.getError(), ex);
-                    loggerUtils.addLog("Failed to open link : " + ErrorCode.ERROR_OPEN_LINK.getError());
-                    EventBus.dispatchErrorEvent(new ErrorEvent(ErrorCode.ERROR_OPEN_LINK, "Failed to open plugin example link"));
-                }
-            }
-        });
+        JMenuItem pluginExample = getPluginExample("file://"
+                + new File(Variables.DOCUMENTS_DIRECTORY, "plugin_example.md").getAbsolutePath());
         pluginMenu.add(pluginExample);
+        JMenuItem pluginGithub = getPluginGithub();
+        pluginMenu.add(new JMenuItem("---"));
+        pluginMenu.add(pluginGithub);
+        documentsMenu.add(pluginMenu);
+        return documentsMenu;
+    }
+
+    private static @NotNull JMenuItem getPluginGithub() {
         JMenuItem pluginGithub = new JMenuItem("Plugin Example (Github Preferred)");
         pluginGithub.addActionListener(e -> {
             if (Desktop.isDesktopSupported()) {
@@ -1070,10 +1081,23 @@ public class MetarGUI {
                 }
             }
         });
-        pluginMenu.add(new JMenuItem("---"));
-        pluginMenu.add(pluginGithub);
-        documentsMenu.add(pluginMenu);
-        return documentsMenu;
+        return pluginGithub;
+    }
+
+    private static @NotNull JMenuItem getPluginExample(String DOCUMENTS_DIRECTORY) {
+        JMenuItem pluginExample = new JMenuItem("Plugin Example (Text Editor)");
+        pluginExample.addActionListener(e -> {
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(DOCUMENTS_DIRECTORY));
+                } catch (IOException | URISyntaxException ex) {
+                    getLogger().error("Failed to open link : " + ErrorCode.ERROR_OPEN_LINK.getError(), ex);
+                    loggerUtils.addLog("Failed to open link : " + ErrorCode.ERROR_OPEN_LINK.getError());
+                    EventBus.dispatchErrorEvent(new ErrorEvent(ErrorCode.ERROR_OPEN_LINK, "Failed to open plugin example link"));
+                }
+            }
+        });
+        return pluginExample;
     }
 
     private static @NotNull JMenuItem getApiExplanationSystemEditor() {

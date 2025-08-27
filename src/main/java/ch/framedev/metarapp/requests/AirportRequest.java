@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+@SuppressWarnings("unused")
 public class AirportRequest {
 
     /**

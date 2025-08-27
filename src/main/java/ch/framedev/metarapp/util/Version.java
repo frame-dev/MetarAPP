@@ -19,6 +19,7 @@ import java.util.List;
  * This class represents a version information object.
  * It contains details about the latest version, build numbers, and version components.
  */
+@SuppressWarnings("unused")
 public class Version {
 
     private String latest;

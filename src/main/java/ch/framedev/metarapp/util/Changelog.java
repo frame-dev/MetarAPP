@@ -17,6 +17,7 @@ import java.util.List;
  * Represents a changelog for a software release.
  * This class contains information about version, release date, performance fixes, bug fixes, and new features.
  */
+@SuppressWarnings("unused")
 public class Changelog {
 
     private String version;

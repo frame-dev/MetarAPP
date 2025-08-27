@@ -124,14 +124,14 @@ public class AdminGUI extends JFrame {
         showProgressBar(); // Show progress bar before loading starts
 
         // Create a SwingWorker to manage asynchronous data loading
-        SwingWorker<Void, Vector<String>> worker = new SwingWorker<Void, Vector<String>>() {
+        SwingWorker<Void, Vector<String>> worker = new SwingWorker<>() {
             @Override
             protected Void doInBackground() {
                 // Iterate through all MySQLData and process asynchronously
                 for (MySQLData mySQLData : mySQLDataList) {
                     // Publish rows one at a time as they complete
                     getStringsUtilitiesAsync(mySQLData).thenAccept(this::publish).exceptionally(ex -> {
-                        ex.printStackTrace(); // Log any exceptions
+                        Main.getLogger().error(ex.getMessage(), ex);
                         return null;
                     });
                 }
@@ -306,6 +306,7 @@ public class AdminGUI extends JFrame {
         worker.execute();
     }
 
+    @SuppressWarnings("unused")
     private static @NotNull Vector<String> getStringsUtilities(MySQLData mySQLData) {
         Vector<String> strings = new Vector<>();
         strings.add(String.valueOf(mySQLData.getId()));
@@ -375,25 +376,25 @@ public class AdminGUI extends JFrame {
         // Fetch data concurrently
         CompletableFuture<Boolean> onlineFuture = Main.database.isOnline(mySQLData.getUserName())
                 .exceptionally(ex -> {
-                    ex.printStackTrace();
+                    Main.getLogger().error(ex.getMessage(), ex);
                     return false; // Default value in case of failure
                 });
 
         CompletableFuture<String> versionFuture = Main.database.getVersion(mySQLData.getUserName())
                 .exceptionally(ex -> {
-                    ex.printStackTrace();
+                    Main.getLogger().error(ex.getMessage(), ex);
                     return "Unknown"; // Default value in case of failure
                 });
 
         CompletableFuture<Boolean> hasUpdateFuture = Main.database.hasUpdate(mySQLData.getUserName())
                 .exceptionally(ex -> {
-                    ex.printStackTrace();
+                    Main.getLogger().error(ex.getMessage(), ex);
                     return false; // Default value in case of failure
                 });
 
         CompletableFuture<String> lastUpdatedFuture = Main.database.getLastUpdated(mySQLData.getUserName())
                 .exceptionally(ex -> {
-                    ex.printStackTrace();
+                    Main.getLogger().error(ex.getMessage(), ex);
                     return "N/A"; // Default value in case of failure
                 });
 
@@ -407,7 +408,7 @@ public class AdminGUI extends JFrame {
                         strings.add(lastUpdatedFuture.get());
                         System.out.println(strings);
                     } catch (Exception e) {
-                        e.printStackTrace(); // Log exceptions
+                        Main.getLogger().error(e.getMessage(), e);
                     }
                     return strings;
                 });

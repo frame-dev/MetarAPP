@@ -97,9 +97,7 @@ public class SettingsGUI {
         Arrays.stream(Locale.values()).map(Locale::getLocaleString).forEachOrdered(comboBox1::addItem);
         comboBox1.removeItem(Locale.FALLBACK.getLocaleString());
         comboBox1.setSelectedItem(settings.get("language"));
-        comboBox1.addActionListener(e -> {
-            languageChanger();
-        });
+        comboBox1.addActionListener(e -> languageChanger());
         showAllChangelogsButton.addActionListener(e -> new FullJsonGUI(showAllChangelogs(), true));
 
         if (localeUtils.getLocale() != null)
@@ -116,7 +114,7 @@ public class SettingsGUI {
         databaseCombo.addActionListener(e -> {
             String databaseType = EventBus.dispatchDatabaseChangeEvent(new DatabaseChangeEvent((String) databaseCombo.getSelectedItem()));
             settings.set("database", databaseType);
-            if (((String) Objects.requireNonNull(databaseType)).equalsIgnoreCase("mysql-use-own")) {
+            if (Objects.requireNonNull(databaseType).equalsIgnoreCase("mysql-use-own")) {
                 settings.set("mysql.own-mysql-database", true);
             } else {
                 settings.set("mysql.own-mysql-database", false);

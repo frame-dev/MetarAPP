@@ -87,9 +87,7 @@ public class BetterSearchGUI {
         if((boolean) Main.settings.get("dark-mode")) {
             setDarkMode();
         }
-        showAllCountryCodesButton.addActionListener(e -> {
-            new ShowAllCountryCodes();
-        });
+        showAllCountryCodesButton.addActionListener(e -> new ShowAllCountryCodes());
     }
 
     private void setDarkMode() {
@@ -224,7 +222,7 @@ public class BetterSearchGUI {
             }
         }
         newListData[0] = countryCodesF;
-        textArea.setText("Country Code; Data = country_code,region_name,iata,icao,airport,latitude,longitude" + "\n" + stringBuilder.toString());
+        textArea.setText("Country Code; Data = country_code,region_name,iata,icao,airport,latitude,longitude" + "\n" + stringBuilder);
         frame.pack();
     }
 
@@ -238,7 +236,7 @@ public class BetterSearchGUI {
             }
         }
         newListData[0] = regionNamesF;
-        textArea.setText("Region Name; Data = country_code,region_name,iata,icao,airport,latitude,longitude" + "\n" + stringBuilderRegion.toString());
+        textArea.setText("Region Name; Data = country_code,region_name,iata,icao,airport,latitude,longitude" + "\n" + stringBuilderRegion);
         frame.pack();
     }
 
@@ -299,7 +297,7 @@ public class BetterSearchGUI {
                 stringBuilder.append(countryCode.get(0)).append("; Data=").append(countryCode).append("\n");
             }
         }
-        textArea.setText("Country Code; Data = country_code,region_name,iata,icao,airport,latitude,longitude" + "\n" + stringBuilder.toString());
+        textArea.setText("Country Code; Data = country_code,region_name,iata,icao,airport,latitude,longitude" + "\n" + stringBuilder);
         frame.pack();
     }
 

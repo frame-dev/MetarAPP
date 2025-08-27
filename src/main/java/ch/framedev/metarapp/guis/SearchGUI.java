@@ -41,14 +41,10 @@ public class SearchGUI extends JFrame {
         scrollPanel.setPreferredSize(new Dimension(580, 300));
         ListOfIcaos listOfIcaos = new ListOfIcaos();
 
-        showCountries.addActionListener(listener -> {
-            new ShowAllCountryCodes();
-        });
+        showCountries.addActionListener(listener -> new ShowAllCountryCodes());
 
 
-        searchButton.addActionListener(listener -> {
-            searchForData(useCC, listOfIcaos, regionName, textArea);
-        });
+        searchButton.addActionListener(listener -> searchForData(useCC, listOfIcaos, regionName, textArea));
 
         betterSearch.addActionListener( listener -> {
             BetterSearchGUI.main(Main.args);

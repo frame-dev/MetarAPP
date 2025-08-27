@@ -22,9 +22,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
-import static ch.framedev.metarapp.main.Main.getFilePath;
-import static ch.framedev.metarapp.main.Main.utils;
+import static ch.framedev.metarapp.main.Main.*;
 
+@SuppressWarnings("unused")
 public class VersionFile {
 
     public void uploadVersions() {
@@ -70,7 +70,7 @@ public class VersionFile {
             System.out.println("File sent successfully!");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            getLogger().error(e.getMessage(), e);
         } finally {
             // Close connections
             if (channelSftp != null) {

@@ -9,6 +9,7 @@ import org.apache.log4j.Level;
 import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
 
+@SuppressWarnings("unused")
 public class LoginUtils {
 
     public String userName, password;

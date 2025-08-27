@@ -13,6 +13,7 @@ import java.util.List;
 /**
  * Currently supported languages are (en-En/de-De.yml)
  */
+@SuppressWarnings("unused")
 public class LocaleUtils {
 
     /**
