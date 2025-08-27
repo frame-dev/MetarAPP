@@ -1,5 +1,6 @@
 package ch.framedev.metarapp.data;
 
+import ch.framedev.metarapp.main.Main;
 import com.google.gson.GsonBuilder;
 
 import java.io.File;
@@ -7,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class MetarData {
 
     private int results;
@@ -592,11 +594,15 @@ public class MetarData {
 
     public void downloadData(File target) throws RuntimeException {
         if(target.getParentFile() != null) {
-            target.getParentFile().mkdirs();
+            if(!target.getParentFile().mkdirs()) {
+                throw new RuntimeException("Could not create parent directories for file: " + target.getAbsolutePath());
+            }
         }
         if(!target.exists()) {
             try {
-                target.createNewFile();
+                if(!target.createNewFile()) {
+                    throw new RuntimeException("Could not create file: " + target.getAbsolutePath());
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -606,7 +612,7 @@ public class MetarData {
             writer.write(toString());
             writer.flush();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            Main.getLogger().error(ex.getMessage(), ex);
         }
     }
 }

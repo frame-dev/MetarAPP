@@ -34,6 +34,7 @@ import java.util.Map;
  *
  * @author framedev
  */
+@SuppressWarnings("unused")
 public class MetarAPPApi {
 
     private static final String VERSION = Main.VERSION;
@@ -109,20 +110,6 @@ public class MetarAPPApi {
             Main.getLogger().error("Could not get FlightPlan DataBase", ex);
             return false;
         }
-        /*
-         * try {
-         * if (getAirportRequest("LSZH").getResponse() == null) {
-         * return false;
-         * }
-         * return getAirportRequest("LSZH").getResponse().isSuccessful();
-         * } catch (IOException ex) {
-         * Main.loggerUtils.addLog("Error While checking if api is online : " +
-         * ex.getMessage());
-         * Main.getLogger().error("Error while checking if api is online : " +
-         * ex.getMessage(), ex);
-         * return false;
-         * }
-         */
     }
 
     /**
@@ -310,12 +297,9 @@ public class MetarAPPApi {
      * Returns an AirportRequest object for a specified ICAO code.
      *
      * @param icao The ICAO code for which to retrieve the airport request.
-     * @param icao
      * @return An AirportRequest object.
-     * @return
      * @throws IOException If an error occurs while creating the AirportRequest
      *                     object.
-     * @throws IOException
      */
     public AirportRequest getAirportRequest(String icao) throws IOException {
         return new AirportRequest(icao);
@@ -330,7 +314,7 @@ public class MetarAPPApi {
         try {
             return UpdateHandler.getLatestVersion();
         } catch (IOException e) {
-            e.printStackTrace();
+            Main.getLogger().error(e.getMessage(), e);
         }
         return null;
     }
@@ -419,7 +403,7 @@ public class MetarAPPApi {
         try {
             new FullJsonGUI(getMetarData(icao).toString(), true);
         } catch (IOException e) {
-            e.printStackTrace();
+            Main.getLogger().error(e.getMessage(), e);
         }
     }
 }

@@ -2,11 +2,9 @@ package ch.framedev.metarapp.database;
 
 import ch.framedev.javamongodbutils.BackendMongoDBManager;
 import ch.framedev.javamongodbutils.MongoDBManager;
-import ch.framedev.javamysqlutils.JsonConnection;
-import ch.framedev.javamysqlutils.MySQL;
+import ch.framedev.javamysqlutils.MySQLV2;
 import ch.framedev.metarapp.data.MySQLData;
 import ch.framedev.metarapp.data.UserData;
-import ch.framedev.metarapp.main.Main;
 import ch.framedev.metarapp.util.EncryptionUtil;
 import ch.framedev.metarapp.util.ErrorCode;
 import ch.framedev.metarapp.util.Variables;
@@ -31,11 +29,12 @@ public class Database {
     private final String UTILITIES_TABLE = "utilities";
     private MongoDBManager mongoDBManager;
     private BackendMongoDBManager backendMongoDBManager;
+    private MySQLV2 mySQL;
 
     public Database() {
         Class<?> dbClass = getDatabaseClass();
 
-        if (dbClass == MySQL.class) {
+        if (dbClass == MySQLV2.class) {
             String host, user, password, database;
             int port;
             if (!(boolean) settings.get(OWN_MYSQL_DATABASE.getKey())) {
@@ -51,13 +50,19 @@ public class Database {
                 database = (String) settings.get(MYSQL_DATABASE.getKey());
                 port = (int) settings.get(MYSQL_PORT.getKey());
             }
-            new MySQL(new JsonConnection(host, user, password, database, port));
-            MySQL.setAllowPublicKey(true);
+            mySQL = new MySQLV2.Builder().
+                    host(host)
+                    .port(port)
+                    .user(user)
+                    .password(password)
+                    .database(database)
+                    .allowPublicKey(true)
+                    .build();
             String message = localeUtils.getString(
                     (boolean) settings.get(OWN_MYSQL_DATABASE.getKey()) ? "connectedToDatabasePort" : "connectedToDatabase",
                     "%HOST%", host
             );
-            message = message.replace("%DATABASE%", "MySQL").replace("%PORT%", String.valueOf(port));
+            message = message.replace("%DATABASE%", "mySQL").replace("%PORT%", String.valueOf(port));
             getLogger().log(Level.INFO, message);
         } else if (dbClass == SQLite.class) {
             new SQLite(Variables.FILES_DIRECTORY + "/" + settings.getString(SQLITE_PATH.getKey()), settings.getString(SQLITE_DATABASE.getKey()));
@@ -81,12 +86,16 @@ public class Database {
         }
     }
 
+    public MySQLV2 getMySQL() {
+        return mySQL;
+    }
+
     public Class<?> getDatabaseClass() {
         String databaseType = (String) settings.get("database");
         switch (databaseType.toLowerCase()) {
             case "mysql":
             case "mysql-use-own":
-                return MySQL.class;
+                return MySQLV2.class;
             case "sqlite":
                 return SQLite.class;
             case "mongodb":
@@ -97,7 +106,7 @@ public class Database {
     }
 
     public boolean isMySQL() {
-        return getDatabaseClass() == MySQL.class;
+        return getDatabaseClass() == MySQLV2.class;
     }
 
     public boolean isSQLite() {
@@ -109,7 +118,7 @@ public class Database {
     }
 
     public DatabaseHelper getDatabaseHelper() {
-        if (getDatabaseClass() == MySQL.class)
+        if (getDatabaseClass() == MySQLV2.class)
             return new MySQLDatabaseHelper();
         else if (getDatabaseClass() == SQLite.class)
             return new SQLiteDatabaseHelper();
@@ -118,7 +127,7 @@ public class Database {
     }
 
     public boolean isMySQLOrSQLite() {
-        return getDatabaseClass() == MySQL.class || getDatabaseClass() == SQLite.class;
+        return getDatabaseClass() == MySQLV2.class || getDatabaseClass() == SQLite.class;
     }
 
     public void createTableIfNotExistsUtilities() {
@@ -129,14 +138,14 @@ public class Database {
                 "HasUpdate TEXT",
                 "LastUpdated VARCHAR(2666)"};
 
-        if (dbClass == MySQL.class || dbClass == SQLite.class) {
+        if (dbClass == MySQLV2.class || dbClass == SQLite.class) {
             DatabaseHelper databaseHelper = getDatabaseHelper();
             try {
                 databaseHelper.isTableExists(UTILITIES_TABLE, new Callback<Boolean>() {
                     @Override
                     public void onResult(Boolean result) {
                         if (!result) {
-                            MySQL.createTableAsync(UTILITIES_TABLE, new MySQL.Callback<Boolean>() {
+                            mySQL.createTableAsync(UTILITIES_TABLE, new MySQLV2.Callback<Boolean>() {
                                 @Override
                                 public void onResult(Boolean aBoolean) {
                                     getLogger().log(Level.INFO, "Utilities Table Created Successfully");
@@ -190,12 +199,12 @@ public class Database {
                     "LastUsed VARCHAR(255)"
             };
 
-            if (dbClass == MySQL.class) {
-                MySQL.isTableExistsAsync(TABLE, new MySQL.Callback<Boolean>() {
+            if (dbClass == MySQLV2.class) {
+                mySQL.isTableExistsAsync(TABLE, new MySQLV2.Callback<Boolean>() {
                     @Override
                     public void onResult(Boolean aBoolean) {
                         if (!aBoolean) {
-                            MySQL.createTableAsync(TABLE, new MySQL.Callback<Boolean>() {
+                            mySQL.createTableAsync(TABLE, new MySQLV2.Callback<Boolean>() {
                                 @Override
                                 public void onResult(Boolean aBoolean) {
                                     getLogger().log(Level.INFO, "Accounts Table Created Successfully");
@@ -264,8 +273,8 @@ public class Database {
             Class<?> dbClass = getDatabaseClass();
             Connection connection = null;
             try {
-                if (dbClass == MySQL.class) {
-                    connection = MySQL.getConnection();
+                if (dbClass == MySQLV2.class) {
+                    connection = mySQL.getConnection();
                 } else if (dbClass == SQLite.class) {
                     connection = SQLite.connect();
                 } else {
@@ -290,7 +299,7 @@ public class Database {
                     }
                 }
             } catch (SQLException ex) {
-                String errorMessage = dbClass == MySQL.class ? ErrorCode.ERROR_MYSQL_DATABASE.getError() : ErrorCode.ERROR_SQLITE_DATABASE.getError();
+                String errorMessage = dbClass == MySQLV2.class ? ErrorCode.ERROR_MYSQL_DATABASE.getError() : ErrorCode.ERROR_SQLITE_DATABASE.getError();
                 loggerUtils.addLog(errorMessage);
                 getLogger().log(Level.ERROR, errorMessage, ex);
                 throw ex; // Consider rethrowing the exception after logging
@@ -325,8 +334,8 @@ public class Database {
             Connection connection = null;
 
             try {
-                if (dbClass == MySQL.class) {
-                    connection = MySQL.getConnection();
+                if (dbClass == MySQLV2.class) {
+                    connection = mySQL.getConnection();
                 } else if (dbClass == SQLite.class) {
                     connection = SQLite.connect();
                 } else {
@@ -343,7 +352,7 @@ public class Database {
                     }
                 }
             } catch (SQLException ex) {
-                String errorMessage = dbClass == MySQL.class ? ErrorCode.ERROR_MYSQL_DATABASE.getError() : ErrorCode.ERROR_SQLITE_DATABASE.getError();
+                String errorMessage = dbClass == MySQLV2.class ? ErrorCode.ERROR_MYSQL_DATABASE.getError() : ErrorCode.ERROR_SQLITE_DATABASE.getError();
                 loggerUtils.addLog(errorMessage);
                 getLogger().log(Level.ERROR, errorMessage, ex);
                 throw ex; // Consider rethrowing the exception after logging
@@ -1264,7 +1273,7 @@ public class Database {
         createTableIfNotExists();
         CompletableFuture<Integer> future = new CompletableFuture<>();
 
-        if (getDatabaseClass() == MySQL.class || getDatabaseClass() == SQLite.class) {
+        if (getDatabaseClass() == MySQLV2.class || getDatabaseClass() == SQLite.class) {
             DatabaseHelper databaseHelper = getDatabaseHelper();
             try {
                 databaseHelper.exists(TABLE, "UserName", userName, new Callback<Boolean>() {
@@ -1317,7 +1326,7 @@ public class Database {
     public void changeValue(String userName, String where, String data) {
         createTableIfNotExists();
         if (getAllUserNames().contains(userName))
-            MySQL.updateDataAsync(TABLE, where, "'" + data + "'", "UserName='" + userName + "'", new MySQL.Callback<Boolean>() {
+            mySQL.updateDataAsync(TABLE, where, "'" + data + "'", "UserName='" + userName + "'", new MySQLV2.Callback<Boolean>() {
                 @Override
                 public void onResult(Boolean aBoolean) {
                     if (aBoolean)
@@ -1335,12 +1344,12 @@ public class Database {
     public void deleteUser(String user) {
         if (isMySQLOrSQLite()) {
             createTableIfNotExists();
-            if (getDatabaseClass() == MySQL.class) {
-                MySQL.existsAsync(TABLE, "UserName", user, new MySQL.Callback<Boolean>() {
+            if (getDatabaseClass() == MySQLV2.class) {
+                mySQL.existsAsync(TABLE, "UserName", user, new MySQLV2.Callback<Boolean>() {
                     @Override
                     public void onResult(Boolean aBoolean) {
                         if (aBoolean)
-                            MySQL.deleteDataInTableAsync(TABLE, "UserName='" + user + "'", new MySQL.Callback<Boolean>() {
+                            mySQL.deleteDataInTableAsync(TABLE, "UserName='" + user + "'", new MySQLV2.Callback<Boolean>() {
                                 @Override
                                 public void onResult(Boolean aBoolean) {
                                     if (aBoolean)
@@ -1389,8 +1398,8 @@ public class Database {
     public boolean createData(String userName) {
         if (isMySQLOrSQLite()) {
             createTableIfNotExistsUtilities();
-            if (getDatabaseClass() == MySQL.class) {
-                try (Connection connection = MySQL.getConnection();
+            if (getDatabaseClass() == MySQLV2.class) {
+                try (Connection connection = mySQL.getConnection();
                      PreparedStatement selectStatement = connection.prepareStatement("SELECT * FROM " + UTILITIES_TABLE + " WHERE UserName = ?")) {
 
                     selectStatement.setString(1, userName);
@@ -1458,8 +1467,8 @@ public class Database {
     public void setVersion(String userName, String version) {
         createData(userName);
         if (isMySQLOrSQLite()) {
-            if (getDatabaseClass() == MySQL.class) {
-                MySQL.updateDataAsync(UTILITIES_TABLE, "Version", version, "UserName='" + userName + "'", new MySQL.Callback<Boolean>() {
+            if (getDatabaseClass() == MySQLV2.class) {
+                mySQL.updateDataAsync(UTILITIES_TABLE, "Version", version, "UserName='" + userName + "'", new MySQLV2.Callback<Boolean>() {
                     @Override
                     public void onResult(Boolean aBoolean) {
                         if (aBoolean)
@@ -1528,8 +1537,8 @@ public class Database {
     public void setOnline(String userName, boolean online) {
         createData(userName);
         if (isMySQLOrSQLite()) {
-            if (getDatabaseClass() == MySQL.class) {
-                MySQL.updateDataAsync(UTILITIES_TABLE, "Online", "" + online, "UserName='" + userName + "'", new MySQL.Callback<Boolean>() {
+            if (getDatabaseClass() == MySQLV2.class) {
+                mySQL.updateDataAsync(UTILITIES_TABLE, "Online", "" + online, "UserName='" + userName + "'", new MySQLV2.Callback<Boolean>() {
                     @Override
                     public void onResult(Boolean aBoolean) {
                         if (aBoolean)
@@ -1601,8 +1610,8 @@ public class Database {
     public void setHasUpdate(String userName, boolean hasUpdate) {
         createData(userName);
         if (isMySQLOrSQLite()) {
-            if (getDatabaseClass() == MySQL.class) {
-                MySQL.updateDataAsync(UTILITIES_TABLE, "HasUpdate", "" + hasUpdate, "UserName='" + userName + "'", new MySQL.Callback<Boolean>() {
+            if (getDatabaseClass() == MySQLV2.class) {
+                mySQL.updateDataAsync(UTILITIES_TABLE, "HasUpdate", "" + hasUpdate, "UserName='" + userName + "'", new MySQLV2.Callback<Boolean>() {
                     @Override
                     public void onResult(Boolean aBoolean) {
                         if (aBoolean)
@@ -1676,8 +1685,8 @@ public class Database {
         date = date.replace("'", "");
         createData(userName);
         if (isMySQLOrSQLite()) {
-            if (getDatabaseClass() == MySQL.class)
-                MySQL.updateDataAsync(UTILITIES_TABLE, "LastUpdated", date, "UserName='" + userName + "'", new MySQL.Callback<Boolean>() {
+            if (getDatabaseClass() == MySQLV2.class)
+                mySQL.updateDataAsync(UTILITIES_TABLE, "LastUpdated", date, "UserName='" + userName + "'", new MySQLV2.Callback<Boolean>() {
                     @Override
                     public void onResult(Boolean aBoolean) {
                         if (aBoolean)
@@ -1747,17 +1756,17 @@ public class Database {
     public boolean changePassword(String userName, String oldPassword, String newPassword) {
         byte[] oldPw = null;
         if (isMySQLOrSQLite()) {
-            if (getDatabaseClass() == MySQL.class) {
+            if (getDatabaseClass() == MySQLV2.class) {
                 try {
                     ResultSet resultSet;
-                    try (PreparedStatement statement = MySQL.getConnection().prepareStatement("SELECT * FROM accounts WHERE password=?")) {
+                    try (PreparedStatement statement = mySQL.getConnection().prepareStatement("SELECT * FROM accounts WHERE password=?")) {
                         statement.setBytes(1, new PasswordHasher().hashPassword(oldPassword));
                         resultSet = statement.executeQuery();
                         if (resultSet.next()) {
                             oldPw = resultSet.getBytes("Password");
                         }
                     }
-                    try (PreparedStatement preparedStatement = MySQL.getConnection().prepareStatement("UPDATE accounts SET password=? WHERE username=?")) {
+                    try (PreparedStatement preparedStatement = mySQL.getConnection().prepareStatement("UPDATE accounts SET password=? WHERE username=?")) {
                         if (oldPw != null) {
                             preparedStatement.setString(2, userName);
                             preparedStatement.setBytes(1, new PasswordHasher().hashPassword(newPassword));

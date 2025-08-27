@@ -9,7 +9,6 @@ import ch.framedev.metarapp.handlers.ConnectionsHandler;
 import ch.framedev.metarapp.util.*;
 import ch.framedev.simplejavautils.SimpleJavaUtils;
 import ch.framedev.simplejavautils.SystemUtils;
-import ch.framedev.simplejavautils.TextUtils;
 import ch.framedev.simplejavautils.TokenHandler;
 import ch.framedev.yamlutils.FileConfiguration;
 import org.apache.log4j.BasicConfigurator;

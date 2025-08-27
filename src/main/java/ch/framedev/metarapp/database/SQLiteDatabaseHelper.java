@@ -15,6 +15,7 @@ import java.sql.*;
 
 import ch.framedev.metarapp.events.DatabaseErrorEvent;
 import ch.framedev.metarapp.events.EventBus;
+import org.jetbrains.annotations.NotNull;
 
 public class SQLiteDatabaseHelper extends DatabaseHelper {
 
@@ -26,27 +27,8 @@ public class SQLiteDatabaseHelper extends DatabaseHelper {
     @Override
     public void createTable(String tableName, String[] columns, Callback<Boolean> callback) throws SQLException {
         super.createTable(tableName, columns, callback);
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < columns.length; i++) {
-            stringBuilder.append(columns[i]);
-            if (i < columns.length - 1) {
-                stringBuilder.append(",");
-            }
-        }
-        boolean date = true;
-        String sql;
-        if (date) {
-            sql = "CREATE TABLE IF NOT EXISTS " + tableName +
-                  " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                  stringBuilder.toString() +
-                  ", created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
-        } else {
-            sql = "CREATE TABLE IF NOT EXISTS " + tableName +
-                  " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                  stringBuilder.toString() +
-                  ");";
-        }
-        SQLite.connectAsync(new SQLite.Callback<Connection>() {
+        String sql = getString(tableName, columns);
+        SQLite.connectAsync(new SQLite.Callback<>() {
             @Override
             public void onResult(Connection result) {
                 try (Connection conn = result;
@@ -55,18 +37,32 @@ public class SQLiteDatabaseHelper extends DatabaseHelper {
                     callback.onResult(true);
                 } catch (SQLException e) {
                     callback.onError(e);
-                    e.printStackTrace();
                     EventBus.dispatchDatabaseErrorEvent(new DatabaseErrorEvent(tableName, e.getMessage(), e));
                 }
             }
 
             @Override
             public void onError(Exception e) {
-                e.printStackTrace();
                 EventBus.dispatchDatabaseErrorEvent(new DatabaseErrorEvent(tableName, e.getMessage(), e));
                 callback.onError(e);
             }
         });
+    }
+
+    private static @NotNull String getString(String tableName, String[] columns) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < columns.length; i++) {
+            stringBuilder.append(columns[i]);
+            if (i < columns.length - 1) {
+                stringBuilder.append(",");
+            }
+        }
+        String sql;
+        sql = "CREATE TABLE IF NOT EXISTS " + tableName +
+                " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                stringBuilder +
+                ", created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
+        return sql;
     }
 
     @Override
@@ -86,7 +82,6 @@ public class SQLiteDatabaseHelper extends DatabaseHelper {
                     }
                 } catch (Exception ex) {
                     callback.onError(ex);
-                    ex.printStackTrace();
                     EventBus.dispatchDatabaseErrorEvent(new DatabaseErrorEvent(tableName, ex.getMessage(), ex));
                 }
             }
@@ -94,7 +89,6 @@ public class SQLiteDatabaseHelper extends DatabaseHelper {
             @Override
             public void onError(Exception e) {
                 callback.onError(e);  // you forgot this too!
-                e.printStackTrace();
                 EventBus.dispatchDatabaseErrorEvent(new DatabaseErrorEvent(tableName, e.getMessage(), e));
             }
         });
@@ -118,7 +112,6 @@ public class SQLiteDatabaseHelper extends DatabaseHelper {
                         callback.onResult(exists);
                     }
                 } catch (Exception ex) {
-                    ex.printStackTrace();
                     callback.onError(ex);
                     EventBus.dispatchDatabaseErrorEvent(new DatabaseErrorEvent(tableName, ex.getMessage(), ex));
                 }
@@ -126,7 +119,6 @@ public class SQLiteDatabaseHelper extends DatabaseHelper {
 
             @Override
             public void onError(Exception e) {
-                e.printStackTrace();
                 EventBus.dispatchDatabaseErrorEvent(new DatabaseErrorEvent(tableName, e.getMessage(), e));
                 callback.onError(e);
             }
@@ -162,7 +154,6 @@ public class SQLiteDatabaseHelper extends DatabaseHelper {
 
             @Override
             public void onError(Exception e) {
-                e.printStackTrace();
                 EventBus.dispatchDatabaseErrorEvent(new DatabaseErrorEvent(tableName, e.getMessage(), e));
                 callback.onError(e);
             }
@@ -190,7 +181,6 @@ public class SQLiteDatabaseHelper extends DatabaseHelper {
 
             @Override
             public void onError(Exception e) {
-                e.printStackTrace();
                 EventBus.dispatchDatabaseErrorEvent(new DatabaseErrorEvent(tableName, e.getMessage(), e));
                 callback.onError(e);
             }
@@ -229,7 +219,6 @@ public class SQLiteDatabaseHelper extends DatabaseHelper {
 
             @Override
             public void onError(Exception e) {
-                e.printStackTrace();
                 EventBus.dispatchDatabaseErrorEvent(new DatabaseErrorEvent(tableName, e.getMessage(), e));
                 callback.onError(e);
             }

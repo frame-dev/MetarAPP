@@ -19,7 +19,7 @@ public class FileDownloader extends JFrame {
     private final String location;
     private final String fileNameWithExtension;
 
-    private File file;
+    private final File file;
 
     public FileDownloader(String fileUrl, String location, String fileNameWithExtensions) {
         setTitle("File Downloader");

@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class AirportData {
 
     private String ICAO;

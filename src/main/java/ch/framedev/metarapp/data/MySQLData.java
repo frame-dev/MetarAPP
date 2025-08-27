@@ -17,9 +17,7 @@ public class MySQLData {
     private String lastUsed;
 
     public MySQLData(String userName) {
-        initializeUser(userName).thenRun(() -> {
-            System.out.println("User initialization successful!");
-        }).exceptionally(ex -> {
+        initializeUser(userName).thenRun(() -> System.out.println("User initialization successful!")).exceptionally(ex -> {
             System.err.println("Error initializing user: " + ex.getMessage());
             return null;
         });

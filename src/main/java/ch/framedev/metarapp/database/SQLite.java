@@ -15,7 +15,9 @@ public class SQLite {
 
     public SQLite(String path, String fileName) {
         if (!new File(path).exists())
-            new File(path).mkdirs();
+            if(!new File(path).mkdirs()) {
+                throw new RuntimeException("Could not create directory: " + path);
+            }
 
         databaseFilePath = new File(path, fileName).getAbsolutePath();
     }

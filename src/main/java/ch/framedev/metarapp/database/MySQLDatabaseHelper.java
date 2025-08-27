@@ -11,9 +11,9 @@ package ch.framedev.metarapp.database;
  * This Class was created at 22.08.2024 22:49
  */
 
-import ch.framedev.javamysqlutils.MySQL;
 import ch.framedev.metarapp.events.DatabaseErrorEvent;
 import ch.framedev.metarapp.events.EventBus;
+import ch.framedev.metarapp.main.Main;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,35 +31,32 @@ public class MySQLDatabaseHelper extends DatabaseHelper {
 
     @Override
     public Connection getConnection() throws SQLException {
-        return MySQL.getConnection();
+        return Main.database.getMySQL().getConnection();
     }
 
     @Override
     public void createTable(String tableName, String[] columns, Callback<Boolean> callback) throws SQLException {
         super.createTable(tableName, columns, callback);
-        isTableExists(tableName, new Callback<Boolean>() {
+        isTableExists(tableName, new Callback<>() {
             @Override
             public void onResult(Boolean result) {
                 if (!result) {
-                    throwErrorOnLength(columns == null || columns.length == 0, "At least one column must be specified.");
+                    throwErrorOnLength(columns == null || columns.length == 0);
 
                     String columnDefinitions = getColumnDefinitions(columns);
 
                     String sql = "CREATE TABLE IF NOT EXISTS " + tableName + " ("
-                                 + "ID INT PRIMARY KEY AUTO_INCREMENT, "
-                                 + columnDefinitions
-                                 + ", created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
+                            + "ID INT PRIMARY KEY AUTO_INCREMENT, "
+                            + columnDefinitions
+                            + ", created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
 
-                    executor.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            try (PreparedStatement stmt = MySQL.getConnection().prepareStatement(sql)) {
-                                stmt.execute();  // execute() is used here instead of executeUpdate()
-                                callback.onResult(true);
-                            } catch (SQLException e) {
-                                callback.onError(e);
-                                EventBus.dispatchDatabaseErrorEvent(new DatabaseErrorEvent(tableName, e.getMessage(), e));
-                            }
+                    executor.execute(() -> {
+                        try (PreparedStatement stmt = Main.database.getMySQL().getConnection().prepareStatement(sql)) {
+                            stmt.execute();  // execute() is used here instead of executeUpdate()
+                            callback.onResult(true);
+                        } catch (SQLException e) {
+                            callback.onError(e);
+                            EventBus.dispatchDatabaseErrorEvent(new DatabaseErrorEvent(tableName, e.getMessage(), e));
                         }
                     });
                 }
@@ -74,9 +71,9 @@ public class MySQLDatabaseHelper extends DatabaseHelper {
         });
     }
 
-    private static void throwErrorOnLength(boolean length, String s) {
+    private static void throwErrorOnLength(boolean length) {
         if (length) {
-            throw new IllegalArgumentException(s);
+            throw new IllegalArgumentException("At least one column must be specified.");
         }
     }
 
@@ -95,7 +92,7 @@ public class MySQLDatabaseHelper extends DatabaseHelper {
     public void isTableExists(String tableName, Callback<Boolean> callback) throws SQLException {
         super.isTableExists(tableName, callback);
         executor.execute(() -> {
-            try (Connection connection = MySQL.getConnection()) {
+            try (Connection connection = Main.database.getMySQL().getConnection()) {
                 PreparedStatement statement = connection.prepareStatement("SHOW TABLES LIKE ?");
                 statement.setString(1, tableName);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -112,7 +109,7 @@ public class MySQLDatabaseHelper extends DatabaseHelper {
     public void exists(String tableName, String columnName, String value, Callback<Boolean> callback) throws SQLException {
         super.exists(tableName, columnName, value, callback);
         executor.execute(() -> {
-            try (Connection connection = MySQL.getConnection()) {
+            try (Connection connection = Main.database.getMySQL().getConnection()) {
                 PreparedStatement statement = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE " + columnName + " = ?");
                 statement.setString(1, value);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -129,7 +126,7 @@ public class MySQLDatabaseHelper extends DatabaseHelper {
     public void get(String tableName, String columnName, String whereColumn, String whereValue, Callback<Object> callback) throws SQLException {
         super.get(tableName, columnName, whereColumn, whereValue, callback);
         executor.execute(() -> {
-            try (Connection connection = MySQL.getConnection()) {
+            try (Connection connection = Main.database.getMySQL().getConnection()) {
                 PreparedStatement statement = connection.prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + whereColumn + " = ?");
                 statement.setString(1, whereValue);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -165,7 +162,7 @@ public class MySQLDatabaseHelper extends DatabaseHelper {
     public <T> void get(String tableName, String columnName, String whereColumn, String whereValue, Class<T> clazz, Callback<T> callback) throws SQLException {
         super.get(tableName, columnName, whereColumn, whereValue, clazz, callback);
         executor.execute(() -> {
-            try (Connection connection = MySQL.getConnection()) {
+            try (Connection connection = Main.database.getMySQL().getConnection()) {
                 PreparedStatement statement = connection.prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + whereColumn + " = ?");
                 statement.setString(1, whereValue);
                 try (ResultSet resultSet = statement.executeQuery()) {
