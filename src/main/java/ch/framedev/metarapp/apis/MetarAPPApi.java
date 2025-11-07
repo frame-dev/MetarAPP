@@ -406,4 +406,13 @@ public class MetarAPPApi {
             Main.getLogger().error(e.getMessage(), e);
         }
     }
+    
+    /**
+     * Gets the type of application the plugin is running in.
+     *
+     * @return The AppType enum value.
+     */
+    public Main.AppType getAppType() {
+        return Main.appType;
+    }
 }

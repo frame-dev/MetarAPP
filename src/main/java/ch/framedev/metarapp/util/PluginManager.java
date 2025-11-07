@@ -3,11 +3,8 @@ package ch.framedev.metarapp.util;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ServiceLoader;
+import java.nio.file.*;
+import java.util.*;
 
 import ch.framedev.metarapp.main.Main;
 
@@ -177,30 +174,71 @@ public class PluginManager {
         return Boolean.TRUE.equals(pluginEnabled.get(pluginName));
     }
 
+    /**
+     * Requires Testing
+     * Updates the specified plugin by downloading the latest version and replacing the old JAR file.
+     * @param pluginName The name of the plugin to update.
+     */
     public void updatePlugin(String pluginName) {
-        // Logic to update a specific plugin
         System.out.println("Updating plugin: " + pluginName);
-        Plugin plugin = loadedPlugins.get(pluginName);
-        String url = plugin.getDownloadLink();
-        if (url != null && !url.isEmpty()) {
-            try {
-                plugin.setPluginState(Plugin.PluginState.UPDATING);
-                disablePlugin(pluginName);
-                // Simulate downloading the plugin
-                System.out.println("Downloading plugin from: " + url);
 
-                // Main.utils.download(url, PLUGIN_DIRECTORY + File.separator + pluginName + ".jar");
-                // After downloading, we can reload the plugin
-                loadedPlugins.remove(pluginName);
-                pluginEnabled.remove(pluginName);
-                loadPlugin(pluginName);
-                enablePlugin(pluginName);
-                System.out.println("Plugin " + pluginName + " updated successfully.");
-            } catch (Exception e) {
-                handlePluginError(pluginName, e);
-            }
-        } else {
+        Plugin plugin = loadedPlugins.get(pluginName);
+        if (plugin == null) {
+            System.out.println("Plugin not loaded: " + pluginName);
+            return;
+        }
+
+        String url = plugin.getDownloadLink();
+        if (url == null || url.trim().isEmpty()) {
             System.out.println("No download link available for plugin: " + pluginName);
+            return;
+        }
+
+        File pluginDir = new File(PLUGIN_DIRECTORY);
+        File[] matches = pluginDir.listFiles((dir, name) -> name.contains(pluginName) && name.endsWith(".jar"));
+        if (matches == null || matches.length == 0) {
+            System.out.println("Old plugin file not found for: " + pluginName);
+            return;
+        }
+
+        File oldPluginFile = matches[0];
+        Path tempPath = Paths.get(PLUGIN_DIRECTORY, oldPluginFile.getName() + ".download");
+        Path finalPath = oldPluginFile.toPath();
+
+        try {
+            plugin.setPluginState(Plugin.PluginState.UPDATING);
+            boolean wasEnabled = isPluginEnabled(pluginName);
+            if (wasEnabled) {
+                disablePlugin(pluginName);
+            }
+
+            System.out.println("Downloading plugin from: " + url);
+            // Download to temp file
+            try (java.io.InputStream in = new java.net.URL(url).openStream()) {
+                Files.copy(in, tempPath, StandardCopyOption.REPLACE_EXISTING);
+            }
+
+            // Atomically replace the old jar with the new one (fallback if atomic not supported)
+            try {
+                Files.move(tempPath, finalPath,
+                        StandardCopyOption.ATOMIC_MOVE,
+                        StandardCopyOption.REPLACE_EXISTING);
+            } catch (AtomicMoveNotSupportedException ex) {
+                Files.move(tempPath, finalPath, StandardCopyOption.REPLACE_EXISTING);
+            }
+
+            loadedPlugins.remove(pluginName);
+            pluginEnabled.remove(pluginName);
+
+            loadPlugin(pluginName);
+            if (wasEnabled) {
+                enablePlugin(pluginName);
+            }
+
+            System.out.println("Plugin " + pluginName + " updated successfully.");
+        } catch (Exception e) {
+            handlePluginError(pluginName, e);
+            try { Files.deleteIfExists(tempPath); } catch (Exception ignored) {}
         }
     }
 
@@ -232,7 +270,7 @@ public class PluginManager {
         }
     }
 
-    public void handlePluginError(String pluginName, Exception e) {
+    private void handlePluginError(String pluginName, Exception e) {
         // Logic to handle errors related to plugins
         System.err.println("Error in plugin " + pluginName + ": " + e.getMessage());
     }

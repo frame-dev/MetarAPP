@@ -1,6 +1,6 @@
 {
-  "latest": "1.6.4.4",
-  "latest-buildNumber": "1.6.4.4-1014",
+  "latest": "1.6.4.5",
+  "latest-buildNumber": "1.6.4.5-1015",
   "latest-pre-release": "1.6.4.3-PRE-RELEASE",
   "pre-release": [
     "1.6.0.1-PRE-RELEASE",
@@ -83,6 +83,7 @@
     "1.6.4.1",
     "1.6.4.2",
     "1.6.4.3",
-    "1.6.4.4"
+    "1.6.4.4",
+    "1.6.4.5"
   ]
 }

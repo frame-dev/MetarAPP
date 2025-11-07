@@ -40,9 +40,9 @@ public class Main {
     public static ChangelogsReader changelogsReader;
 
     // TODO Change on every Version
-    public static final String VERSION = "1.6.4.4";
+    public static final String VERSION = "1.6.4.5";
     public static String preRelease = "1.6.4.3-PRE-RELEASE";
-    public static final String BUILD_NUMBER = "1.6.4.4-1014";
+    public static final String BUILD_NUMBER = "1.6.4.5-1015";
 
     // Development variables
     // TODO Change on publish
@@ -68,6 +68,13 @@ public class Main {
 
     // Update Branch
     public static String branch;
+
+    public static AppType appType;
+
+    public static enum AppType {
+        GUI,
+        CLI
+    }
 
     @SuppressWarnings("CommentedOutCode")
     public static void main(String[] args) {
@@ -141,7 +148,9 @@ public class Main {
 
         if (!Desktop.isDesktopSupported() && args.length == 1 && args[0].equalsIgnoreCase("cli")) {
             try {
+                getLogger().info("Plugin support is not available in CLI mode.");
                 ch.framedev.metarapp.cli.Main.main(args);
+                appType = AppType.CLI;
             } catch (IOException | ch.framedev.metarapp.cli.utils.LocaleNotFoundException e) {
                 logger.log(Level.ERROR, "Error in CLI mode: " + e.getMessage());
             }
@@ -161,14 +170,18 @@ public class Main {
         }
 
         // Load plugins at startup
+        getLogger().info("Loading plugins...");
         PluginManager pluginManager = PluginManager.getInstance();
         pluginManager.loadPlugins();
         pluginManager.initializePlugins();
         pluginManager.enablePlugins();
         pluginManager.listPlugins();
+        getLogger().info("Plugins loaded successfully.");
 
+        getLogger().info("Initializing Update Handler...");
         UpdateHandler updateHandler = new UpdateHandler();
         updateHandler.init();
+        getLogger().info("Update Handler initialized.");
 
         if (Desktop.isDesktopSupported()) {
             if (!(boolean) Main.settings.get("show-changelogs")) {
@@ -201,6 +214,7 @@ public class Main {
             }
             settings.set("version", VERSION);
             settings.save();
+            appType = AppType.GUI;
         }
 
         // new VersionFile().uploadVersions();

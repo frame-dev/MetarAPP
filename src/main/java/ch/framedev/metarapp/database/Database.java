@@ -662,7 +662,11 @@ public class Database {
                                 dbHelper.update(TABLE, "Used", used, "UserName", userName, new Callback<>() {
                                     @Override
                                     public void onResult(Boolean result) {
-                                        // no-op
+                                        if(result) {
+                                            getLogger().log(Level.INFO, "Updated 'Used' value for user: " + userName + " to " + used);
+                                        } else {
+                                            getLogger().log(Level.WARN, "Failed to update 'Used' value for user: " + userName);
+                                        }
                                     }
 
                                     @Override
